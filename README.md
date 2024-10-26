@@ -5,31 +5,31 @@ Cohere is a dynamic professional platform that combines real-time collaboration 
 ## Key Features:
 
 ###  Collaboration and Communication Features
-📡 Real-Time Communication
-👍 Reactions to Messages
-🧵 Threads / Replies System
-✏️ Editing Messages
-🗑️ Deleting Messages
-🔐 Role-Based Access Control
-🖼️ Image Attachments
-🔒 Authentication with NextAuth v5
-📺 Channel Creation
-🏢 Workspace Creation
-✉️ Invite System / Invite Codes
-💬 Direct Messaging
-👥 User Profiles
+- 📡 Real-Time Communication
+- 👍 Reactions to Messages
+- 🧵 Threads / Replies System
+- ✏️ Editing Messages
+- 🗑️ Deleting Messages
+- 🔐 Role-Based Access Control
+- 🖼️ Image Attachments
+- 🔒 Authentication with NextAuth v5
+- 📺 Channel Creation
+- 🏢 Workspace Creation
+- ✉️ Invite System / Invite Codes
+- 💬 Direct Messaging
+- 👥 User Profiles
 
 ### Social Media & Professional Network Features
-🔗 Follow System
-🌍 Public Profiles & Feeds
-📢 Posts & Status Updates
-🎯 Hashtags & Topics
-📊 Analytics for Profiles & Posts
-📄 Professional Portfolio
-🔍 Enhanced Search
-⭐ Endorsements & Recommendations
-🔔 Notifications for Followed Topics & Connections
-🎖️ Achievements & Badges
-💼 Job Board & Opportunities
+- 🔗 Follow System
+- 🌍 Public Profiles & Feeds
+- 📢 Posts & Status Updates
+- 🎯 Hashtags & Topics
+- 📊 Analytics for Profiles & Posts
+- 📄 Professional Portfolio
+- 🔍 Enhanced Search
+- ⭐ Endorsements & Recommendations
+- 🔔 Notifications for Followed Topics & Connections
+- 🎖️ Achievements & Badges
+- 💼 Job Board & Opportunities
 
 ...and much more ✨
