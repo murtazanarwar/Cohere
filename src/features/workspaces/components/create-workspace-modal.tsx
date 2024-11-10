@@ -36,7 +36,7 @@ export const CreateWorkspaceModal = () => {
                 handleClose();
             },
             onError(error) {
-                
+                console.log(error);
             },
             onSettled() {
 

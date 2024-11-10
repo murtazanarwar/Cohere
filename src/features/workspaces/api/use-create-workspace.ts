@@ -49,6 +49,7 @@ export const useCreateWorkspace = () => {
     return {
         mutate,
         data,
+        error,
         isPending,
         isSuccess,
         isError,
