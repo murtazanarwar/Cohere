@@ -22,7 +22,10 @@ const WorkspaceSwitcher = () => {
     const { data: workspace, isLoading: workspaceLoading } = useGetWorkspace({ id: workspaceId });
 
     const filteredWorkspaces = workspaces?.filter( ( workspace ) => workspace?._id !== workspaceId );
-    console.log(_open, workspacesLoading);
+
+    const isDummyOpen = _open;
+    if (workspacesLoading) console.log("Loading workspaces...")
+
     return ( 
         <DropdownMenu>
             <DropdownMenuTrigger>
