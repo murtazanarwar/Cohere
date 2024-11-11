@@ -23,7 +23,7 @@ const WorkspaceSwitcher = () => {
 
     const filteredWorkspaces = workspaces?.filter( ( workspace ) => workspace?._id !== workspaceId );
 
-    const isDummyOpen = _open;
+    if(_open) console.log("Dialog Opened...")
     if (workspacesLoading) console.log("Loading workspaces...")
 
     return ( 
