@@ -1,5 +1,5 @@
 import { UserButton } from "@/app/auth/user-button";
-import WorkspaceSwitcher from "../workspace-switcher";
+import WorkspaceSwitcher from "./workspace-switcher";
 import SidebarButton from "./sidebar-button";
 import { Bell, Home, MessagesSquare, MoreHorizontal } from "lucide-react";
 import { usePathname } from "next/navigation";
