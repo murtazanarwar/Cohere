@@ -17,6 +17,8 @@ const WorkspaceSidebar = () => {
     const { data: channels, isLoading: channelsLoading } = useGetChannels({workspaceId});
     const { data: members, isLoading: membersLoading } = useGetMember({workspaceId});
 
+    console.log(channelsLoading,membersLoading);
+
     if(workspaceLoading || memberLoading){
         return(
             <div className="flex flex-col bg-[#103d6a] h-full items-center justify-center">
