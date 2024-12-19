@@ -8,16 +8,16 @@ import { useGetChannels } from "@/features/channels/api/use-get-channels";
 import { WorkspaceSection } from "./workspace-section";
 import { useGetMember } from "@/features/members/api/use-get-member";
 import { UserItem } from "./user-item";
+import { useCreateChannelModal } from "@/features/channels/store/use-create-channel-modal";
 
 const WorkspaceSidebar = () => {
     const workspaceId = useWorkspaceId();
+    const[_open, setOPen] = useCreateChannelModal();
 
     const { data: member, isLoading: memberLoading } = useCurrentMember({ workspaceId });
     const { data: workspace, isLoading: workspaceLoading } = useGetWorkspace({ id: workspaceId });
-    const { data: channels, isLoading: channelsLoading } = useGetChannels({workspaceId});
-    const { data: members, isLoading: membersLoading } = useGetMember({workspaceId});
-
-    console.log(channelsLoading,membersLoading);
+    const { data: channels, isLoading: _channelsLoading } = useGetChannels({workspaceId});
+    const { data: members, isLoading: _membersLoading } = useGetMember({workspaceId});
 
     if(workspaceLoading || memberLoading){
         return(
@@ -55,7 +55,7 @@ const WorkspaceSidebar = () => {
             <WorkspaceSection
                     label="Channels"
                     hint="New channel"
-                    onNew={() => {}}
+                    onNew={ member.role === "admin" ? () => setOPen(true) : undefined }
                 >
                     {channels?.map((item) => (
                         <SidebarItem
