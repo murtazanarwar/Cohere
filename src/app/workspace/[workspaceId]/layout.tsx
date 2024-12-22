@@ -36,7 +36,6 @@ const WorkspaceLayout = ({children} : WorkspaceLayoutProps) => {
                         {children}
                     </ResizablePanel>
                 </ResizablePanelGroup>
-                {children}
             </div>
         </div>
      );
