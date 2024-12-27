@@ -8,27 +8,27 @@ interface ToolbarProps {
   isAuthor: boolean;
   isPending: boolean;
   hideThreadButton?: boolean;
-  onEdit: () => void;
-  onThread: () => void;
-  onDelete: () => void;
-  onReaction: (value: string) => void;
+  handleEdit: () => void;
+  handleThread: () => void;
+  handleDelete: () => void;
+  handleReaction: (value: string) => void;
 }
 
 export const Toolbar = ({
   isAuthor,
   isPending,
   hideThreadButton,
-  onDelete,
-  onEdit,
-  onReaction,
-  onThread,
+  handleDelete,
+  handleEdit,
+  handleReaction,
+  handleThread,
 }: ToolbarProps) => {
   return (
     <div className="absolute top-0 right-5">
       <div className="group-hover:opacity-100 opacity-0 transition-opacity border bg-white rounded-md shadow-sm">
         <EmojiPopover
           hint="Add reaction"
-          onEmojiSelect={(emoji) => onReaction(emoji)}
+          onEmojiSelect={(emoji) => handleReaction(emoji)}
         >
           <Button size="iconSm" variant="ghost" disabled={isPending}>
             <Smile className="size-4" />
@@ -40,7 +40,7 @@ export const Toolbar = ({
               size="iconSm"
               variant="ghost"
               disabled={isPending}
-              onClick={onThread}
+              onClick={handleThread}
             >
               <MessageSquareTextIcon className="size-4" />
             </Button>
@@ -52,7 +52,7 @@ export const Toolbar = ({
               size="iconSm"
               variant="ghost"
               disabled={isPending}
-              onClick={onEdit}
+              onClick={handleEdit}
             >
               <Pencil className="size-4" />
             </Button>
@@ -64,7 +64,7 @@ export const Toolbar = ({
               size="iconSm"
               variant="ghost"
               disabled={isPending}
-              onClick={onDelete}
+              onClick={handleDelete}
             >
               <Trash className="size-4" />
             </Button>

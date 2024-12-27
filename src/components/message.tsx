@@ -12,6 +12,9 @@ import { Thumbnail } from "./thumbnail";
 import { Toolbar } from "./toolbar";
 import { ThreadBar } from "./thread-bar";
 import { Reactions } from "./reactions";
+import { useUpdateMessage } from "@/features/messages/api/use-update-message";
+import { useRemoveMessage } from "@/features/messages/api/use-remove-message";
+import { useToggleReaction } from "@/features/reactions/api/use-toggle-reaction";
 
 const Renderer = dynamic(() => import("@/components/renderer"), { ssr: false });
 const Editor = dynamic(() => import("@/components/editor"), { ssr: false });
@@ -78,64 +81,47 @@ export const Message = ({
         "Delete message?",
         "Are you sure you want to delete this message? This cannot be undone"
     );
-    //   const updateMessage = useUpdateMessage();
-    //   const removeMessage = useRemoveMessage();
-    //   const toggleReaction = useToggleReaction();
+    const { mutate: updateMessage, isPending: isUpdatingMessage } = useUpdateMessage();
+    const { mutate: removeMessage, isPending: isRemovingMessage } = useRemoveMessage();
 
-    //   const isPending =
-    //     updateMessage.isPending ||
-    //     removeMessage.isPending ||
-    //     toggleReaction.isPending;
+    const { mutate: toggleReaction, isPending: isTogglingReaction } = useToggleReaction();
 
-    //   const handleUpdate = ({ body }: { body: string }) => {
-    //     updateMessage
-    //       .mutateAsync({
-    //         id,
-    //         body,
-    //       })
-    //       .then(() => {
-    //         toast.success("Message updated");
-    //         setEditingId(null);
-    //       })
-    //       .catch((error) => {
-    //         console.error(error);
-    //         toast.error("Failed to update message");
-    //       });
-    //   };
+    const isPending = isUpdatingMessage || isRemovingMessage || isTogglingReaction;
 
-    //   const handleRemove = async () => {
-    //     const ok = await confirm();
-    //     if (!ok) return;
+    const handleUpdate = ({ body }: { body: string }) => {
+        updateMessage({ id, body }, {
+            onSuccess: () => {
+                toast.success("Message updated");
+                setEditingId(null);
+            },
+            onError: () => {
+                toast.error("Failed to update message")
+            }
+        })
+    };
 
-    //     removeMessage
-    //       .mutateAsync({
-    //         id,
-    //       })
-    //       .then(() => {
-    //         toast.success("Message deleted");
-    //         setEditingId(null);
+    const handleRemove = async () => {
+        const ok = await confirm();
+        if (!ok) return;
 
-    //         if (id === parentMessageId) {
-    //           closeMessage();
-    //         }
-    //       })
-    //       .catch((error) => {
-    //         console.error(error);
-    //         toast.error("Failed to delete message");
-    //       });
-    //   };
+        removeMessage({ id }, {
+            onSuccess: () => {
+                toast.success("Message removed");
+            },
+            onError: () => {
+                toast.error("Failed to remove message")
+            }
+        })
+    };
+    
+    const handleReaction = ( value: string ) => {
+        toggleReaction({ messageId: id, value }, {
+            onError: () => {
+                toast.error("Failed to toggle reaction")
+            }
+        })
+    };
 
-    //   const handleReaction = (value: string) => {
-    //     toggleReaction
-    //       .mutateAsync({
-    //         messageId: id,
-    //         value,
-    //       })
-    //       .catch((error) => {
-    //         console.error(error);
-    //         toast.error("Failed to toggle reaction");
-    //       });
-    //   };
 
     if (isCompact) {
         return (
@@ -145,7 +131,7 @@ export const Message = ({
                     className={cn(
                         "flex flex-col gap-2 p-1.5 px-5 hover:bg-gray-100/60 group relative",
                         isEditing && "bg-[#F2C74433] hover:bg-[#F2C74433]",
-                        false &&
+                        isRemovingMessage &&
                         "bg-rose-500/50 transform transition-all scale-y-0 origin-bottom duration-200"
                     )}
                 >
@@ -158,10 +144,8 @@ export const Message = ({
                         {isEditing ? (
                             <div className="w-full h-full">
                                 <Editor
-                                    onSubmit={() => { }}
-                                    //   onSubmit={handleUpdate}
-                                    disabled={false}
-                                    //   disabled={isPending}
+                                    onSubmit={handleUpdate}
+                                    disabled={isPending}
                                     defaultValue={JSON.parse(body)}
                                     onCancel={() => setEditingId(null)}
                                     variant="update"
@@ -176,7 +160,7 @@ export const Message = ({
                                         (edited)
                                     </span>
                                 ) : null}
-                                <Reactions data={reactions} onChange={() => {}} />
+                                <Reactions data={reactions} onChange={handleReaction} />
                                 <ThreadBar
                                     count={threadCount}
                                     image={threadImage}
@@ -191,16 +175,13 @@ export const Message = ({
                     {!isEditing && (
                         <Toolbar
                             isAuthor={isAuthor}
-                            // isPending={isPending}
-                            isPending={false}
+                            isPending={isPending}
                             hideThreadButton={hideThreadButton}
-                            onEdit={() => setEditingId(id)}
+                            handleEdit={() => setEditingId(id)}
                             // onThread={() => openMessage(id)}
-                            onThread={() => {}}
-                            onDelete={() => {}}
-                            // onDelete={handleRemove}
-                            // onReaction={handleReaction}
-                            onReaction={() => {}}
+                            handleThread={() => { }}
+                            handleDelete={handleRemove}
+                            handleReaction={handleReaction}
                         />
                     )}
                 </div>
@@ -212,10 +193,10 @@ export const Message = ({
         <>
             <ConfirmDialog />
             <div
-                className = {cn(
-                  "flex flex-col gap-2 p-1.5 px-5 hover:bg-gray-100/60 group relative",
-                  isEditing && "bg-[#F2C74433] hover:bg-[#F2C74433]",
-                  false &&
+                className={cn(
+                    "flex flex-col gap-2 p-1.5 px-5 hover:bg-gray-100/60 group relative",
+                    isEditing && "bg-[#F2C74433] hover:bg-[#F2C74433]",
+                    isRemovingMessage &&
                     "bg-rose-500/50 transform transition-all scale-y-0 origin-bottom duration-200"
                 )}
             >
@@ -232,10 +213,8 @@ export const Message = ({
                     {isEditing ? (
                         <div className="w-full h-full">
                             <Editor
-                                onSubmit={() => { }}
-                                // onSubmit={handleUpdate}
-                                disabled={false}
-                                // disabled={isPending}
+                                onSubmit={handleUpdate}
+                                disabled={isPending}
                                 defaultValue={JSON.parse(body)}
                                 onCancel={() => setEditingId(null)}
                                 variant="update"
@@ -247,7 +226,7 @@ export const Message = ({
                                 <button
                                     className="font-bold text-primary hover:underline"
                                     // onClick={() => openProfile(memberId)}
-                                    onClick={() => {}}
+                                    onClick={() => { }}
                                 >
                                     {authorName}
                                 </button>
@@ -263,14 +242,14 @@ export const Message = ({
                             {updatedAt ? (
                                 <span className="text-xs text-muted-foreground">(edited)</span>
                             ) : null}
-                            <Reactions data={reactions} onChange={() => {}} />
+                            <Reactions data={reactions} onChange={handleReaction} />
                             <ThreadBar
-                                    count={threadCount}
-                                    image={threadImage}
-                                    name={threadName}
-                                    timestamp={threadTimestamp}
-                                    // onClick={() => openMessage(id)}
-                                    onClick={() => {}}
+                                count={threadCount}
+                                image={threadImage}
+                                name={threadName}
+                                timestamp={threadTimestamp}
+                                // onClick={() => openMessage(id)}
+                                onClick={() => {}}
                             />
                         </div>
                     )}
@@ -278,16 +257,13 @@ export const Message = ({
                 {!isEditing && (
                     <Toolbar
                         isAuthor={isAuthor}
-                        // isPending={isPending}
-                        isPending={false}
+                        isPending={isPending}
                         hideThreadButton={hideThreadButton}
-                        onEdit={() => setEditingId(id)}
+                        handleEdit={() => setEditingId(id)}
                         // onThread={() => openMessage(id)}
-                        onThread={() => {}}
-                        onDelete={() => {}}
-                        // onDelete={handleRemove}
-                        // onReaction={handleReaction}
-                        onReaction={() => {}}
+                        handleThread={() => { }}
+                        handleDelete={handleRemove}
+                        handleReaction={handleReaction}
                     />
                 )}
             </div>
