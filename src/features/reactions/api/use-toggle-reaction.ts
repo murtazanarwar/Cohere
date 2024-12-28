@@ -5,8 +5,8 @@ import { useCallback, useMemo, useState } from "react";
 import { Id } from "../../../../convex/_generated/dataModel";
 
 type RequestType = { 
-    value: string,
     messageId: Id<"messages">,
+    value: string,
 };
 type ResponseType = Id<"reactions"> | null;
 

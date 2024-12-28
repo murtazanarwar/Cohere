@@ -4,11 +4,11 @@ import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
 
 interface useGetMembersProps {
-  id: Id<"members">;
+  workspaceId: Id<"workspaces">;
 }
 
-export const useGetMember = ({ id }: useGetMembersProps) => {
-  const data = useQuery(api.members.getById, { id });
+export const useGetMembers = ({ workspaceId }: useGetMembersProps) => {
+  const data = useQuery(api.members.get, { workspaceId });
   const isLoading = data === undefined;
 
   return {
