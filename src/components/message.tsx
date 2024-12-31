@@ -49,7 +49,7 @@ interface MessageProps {
 const formatFullTime = (date: Date) => {
     if (isToday(date)) return "Today";
     else if (isYesterday(date)) return "Yesterday";
-    return format(date, "MMM D, YYYY") + " at " + format(date, "h:mm:ss a");
+    return format(date, "MMM d, yyyy") + " at " + format(date, "h:mm:ss a");
 };
 
 export const Message = ({
