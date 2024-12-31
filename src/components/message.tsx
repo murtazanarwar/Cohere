@@ -123,6 +123,7 @@ export const Message = ({
     const handleReaction = ( value: string ) => {
         toggleReaction({ messageId: id, value }, {
             onError: () => {
+                console.log(typeof(value));
                 toast.error("Failed to toggle reaction")
             }
         })

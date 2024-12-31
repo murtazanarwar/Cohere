@@ -56,13 +56,13 @@ export const toggle = mutation({
       await ctx.db.delete(existingMessageReactionFromUser._id);
       return existingMessageReactionFromUser._id;
     } else {
-      const newReactionId = await ctx.db.insert("reactions", {
+      const reactionId = await ctx.db.insert("reactions", {
         memberId: member._id,
-        messageId: message._id,
+        messageId: args.messageId,
         value: args.value,
         workspaceId: message.workspaceId,
       });
-      return newReactionId;
+      return reactionId;
     }
   },
 });

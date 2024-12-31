@@ -18,10 +18,17 @@ export const ThreadBar = ({
 }: ThreadBarProps) => {
     if (!count || !timestamp) return null;
 
+    const formattedTimestamp = new Date(timestamp).toLocaleString("en-US", {
+        hour: "numeric",
+        minute: "numeric",
+        hour12: true,
+    });
+
     return (
         <button
             onClick={onClick}
             className="p-1 rounded-md hover:bg-white border border-transparent hover:border-border flex items-center justify-start group/thread-bar transition max-w-[600px]"
+            aria-label={`Thread with ${count} ${count > 1 ? "replies" : "reply"} by ${name}`}
         >
             <div className="flex items-center gap-2 overflow-hidden">
                 <Avatar className="size-6 shrink-0">
@@ -32,7 +39,7 @@ export const ThreadBar = ({
                     {count} {count > 1 ? "replies" : "reply"}
                 </span>
                 <span className="text-xs text-muted-foreground truncate group-hover/thread-bar:hidden block">
-                    Last reply {}
+                    Last reply {formattedTimestamp}
                 </span>
                 <span className="text-xs text-muted-foreground truncate group-hover/thread-bar:block hidden">
                     View thread
