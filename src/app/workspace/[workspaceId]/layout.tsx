@@ -11,7 +11,7 @@ import {
 
 import { Id } from "../../../../convex/_generated/dataModel";
 import { usePanel } from "@/hooks/use-pannel";
-import Toolbar from "./toolbar";
+import { Toolbar } from "./toolbar";
 import WorkspaceSidebar from "./workspace-sidebar";
 import { Thread } from "@/features/messages/components/thread";
 import { Profile } from "@/features/members/components/profile";
