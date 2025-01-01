@@ -50,11 +50,13 @@ const WorkspaceSidebar = () => {
                     label="Threads"
                     icon={MessageSquareText}
                     id="threads"
+                    disabled = {true}
                 />
                 <SidebarItem 
                     label="Draft & Sent"
                     icon={SendHorizonal}
                     id="drafts"
+                    disabled = {true}
                 />
             </div>
             <WorkspaceSection
