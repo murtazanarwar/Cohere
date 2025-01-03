@@ -1,4 +1,4 @@
-# Cohere
+# Cohere 
 
 Cohere is a dynamic professional platform that combines real-time collaboration with social networking features, tailored for industry professionals and teams. With organized channels, threaded conversations, and public feeds for industry insights, Cohere enables users to stay informed, connect with peers, and collaborate on projects seamlessly. Users can join topic-based discussions, follow industry trends, and build a network of professional connections in one streamlined space—ideal for fostering innovation, productivity, and community in today’s digital workspace.
 
