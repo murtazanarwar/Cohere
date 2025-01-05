@@ -15,7 +15,7 @@ Cohere is a dynamic professional platform that combines real-time collaboration 
 - 🔒 Authentication with NextAuth v5
 - 📺 Channel Creation
 - 🏢 Workspace Creation
-- ✉️ Invite System / Invite Codes
+- ✉️ Invite Codes
 - 💬 Direct Messaging
 - 👥 User Profiles
 
