@@ -17,7 +17,7 @@ Cohere is a dynamic professional platform that combines real-time collaboration 
 - 🏢 Workspace Creation
 - ✉️ Invite Codes
 - 💬 Direct Messaging
-- 👥 User Profiles
+- 👥 User Profile
 
 ### Social Media & Professional Network Features
 - 🔗 Follow System
