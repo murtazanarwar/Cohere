@@ -252,7 +252,7 @@ export const Message = ({
                         //         name={threadName}
                         //         timestamp={threadTimestamp}
                         //         onClick={() => onOpenMessage(id)}
-                        //     />
+                        //     /> 
                         // </div>
                         <div>
                             <div className=""></div>    
