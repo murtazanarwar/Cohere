@@ -51,7 +51,7 @@ const SignInCard: React.FC<SignInCardProps> = ({
     }
   
     return ( 
-        <Card className="w-full h-full p-8">
+        <Card className="w-full h-full p-12 space-y-4" style={{ borderColor: "#611F69" }}>
             <CardHeader className="px-0 pt-0">
                 <CardTitle>
                     Login to Continue
@@ -66,8 +66,8 @@ const SignInCard: React.FC<SignInCardProps> = ({
                   <p>{error}</p> 
                 </div>
             )}
-            <CardContent className="space-y-5 px-0 pb-0">
-                <form onSubmit={onPasswordSignIn} className="space-y-2.5">
+            <CardContent className="space-y-8 px-0 pb-0">
+                <form onSubmit={onPasswordSignIn} className="space-y-5">
                     <Input
                         disabled={pending}
                         value={email}
@@ -87,14 +87,14 @@ const SignInCard: React.FC<SignInCardProps> = ({
                     <Button 
                         disabled={pending}
                         type="submit" 
-                        className="w-full" 
+                        className="bg-[#4A154B] hover:bg-[#611f69] w-full"
                         size="lg"
                     >
                         Continue
                     </Button>
                 </form>
                 <Separator />
-                <div className="flex flex-col gap-y-2.5">
+                <div className="flex flex-col gap-y-5">
                     <Button
                         disabled={pending}
                         onClick={() => handleProverSignIn("google")}
@@ -116,7 +116,7 @@ const SignInCard: React.FC<SignInCardProps> = ({
                         Continue with Github
                     </Button>
                 </div>
-                <p className="text-xs text-muted-foreground">
+                <p className="transform translate-y-12 text-xs text-muted-foreground">
                     Don&apos;t have an account? <span onClick={() => setState("signUp")} className="text-sky-900 hover:underline cursor-pointer">Sign up</span>
                 </p>
             </CardContent>
