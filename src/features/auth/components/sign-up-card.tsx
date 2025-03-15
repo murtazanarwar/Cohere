@@ -58,7 +58,7 @@ const SignUpCard: React.FC<SignUpCardProps> = ({
     }
 
     return ( 
-        <Card className="w-full h-full p-8">
+        <Card className="w-full h-full pl-12 pr-12 pt-8 space-y-2.5" style={{ borderColor: "#611F69" }} >
             <CardHeader className="px-0 pt-0">
                 <CardTitle>
                     Sign up to Continue
@@ -68,12 +68,12 @@ const SignUpCard: React.FC<SignUpCardProps> = ({
                 </CardDescription>
             </CardHeader>
             {!!error && (
-                <div className="bg-destructive/15 p-3 rounded-md flex items-center gap-x-2 text-sm text-destructive mb-6">
+                <div className="bg-destructive/15 p-2.5 rounded-md flex items-center gap-x-2 text-sm text-destructive mb-6">
                   <TriangleAlert className="size-4" /> 
                   <p>{error}</p> 
                 </div>
             )}
-            <CardContent className="space-y-5 px-0 pb-0">
+            <CardContent className="space-y-4 px-0 pb-0">
                 <form onSubmit = {onPasswordSignUp} className="space-y-2.5">
                     <Input
                         disabled={pending}
@@ -110,7 +110,7 @@ const SignUpCard: React.FC<SignUpCardProps> = ({
                     <Button 
                         disabled={pending}
                         type="submit" 
-                        className="w-full" 
+                        className="w-full bg-[#4A154B] hover:bg-[#611f69]" 
                         size="lg"
                     >
                         Continue

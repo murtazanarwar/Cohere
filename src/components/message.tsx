@@ -225,40 +225,34 @@ export const Message = ({
                             />
                         </div>
                     ) : (
-                        // <div className="flex flex-col w-full overflow-hidden">
-                        //     <div className="text-sm">
-                        //         <button
-                        //             className="font-bold text-primary hover:underline"
-                        //             onClick={() => onOpenProfile(memberId)}
-                        //         >
-                        //             {authorName}
-                        //         </button>
-                        //         <span>&nbsp;&nbsp;</span>
-                        //         <Hint label={formatFullTime(new Date(createdAt))}>
-                        //             <button className="text-xs text-muted-foreground hover:underline">
-                        //                 {format(new Date(createdAt), "h:mm a")}
-                        //             </button>
-                        //         </Hint>
-                        //     </div>
-                        //     <Renderer value={body} />
-                        //     <Thumbnail url={image} />
-                        //     {updatedAt ? (
-                        //         <span className="text-xs text-muted-foreground">(edited)</span>
-                        //     ) : null}
-                        //     <Reactions data={reactions} onChange={handleReaction} />
-                        //     <ThreadBar
-                        //         count={threadCount}
-                        //         image={threadImage}
-                        //         name={threadName}
-                        //         timestamp={threadTimestamp}
-                        //         onClick={() => onOpenMessage(id)}
-                        //     /> 
-                        // </div>
-                        <div>
-                            <div className=""></div>    
-                            <div className="flex flex-col overflow-hidden w-3/5 h-auto bg-red-100 rounded-md">
-                                Hi
+                        <div className="flex flex-col w-full overflow-hidden">
+                            <div className="text-sm">
+                                <button
+                                    className="font-bold text-primary hover:underline"
+                                    onClick={() => onOpenProfile(memberId)}
+                                >
+                                    {authorName}
+                                </button>
+                                <span>&nbsp;&nbsp;</span>
+                                <Hint label={formatFullTime(new Date(createdAt))}>
+                                    <button className="text-xs text-muted-foreground hover:underline">
+                                        {format(new Date(createdAt), "h:mm a")}
+                                    </button>
+                                </Hint>
                             </div>
+                            <Renderer value={body} />
+                            <Thumbnail url={image} />
+                            {updatedAt ? (
+                                <span className="text-xs text-muted-foreground">(edited)</span>
+                            ) : null}
+                            <Reactions data={reactions} onChange={handleReaction} />
+                            <ThreadBar
+                                count={threadCount}
+                                image={threadImage}
+                                name={threadName}
+                                timestamp={threadTimestamp}
+                                onClick={() => onOpenMessage(id)}
+                            /> 
                         </div>
                     )}
                 </div>

@@ -67,7 +67,7 @@ const SignInCard: React.FC<SignInCardProps> = ({
                 </div>
             )}
             <CardContent className="space-y-8 px-0 pb-0">
-                <form onSubmit={onPasswordSignIn} className="space-y-5">
+                <form onSubmit={onPasswordSignIn} className="space-y-3">
                     <Input
                         disabled={pending}
                         value={email}
@@ -84,6 +84,9 @@ const SignInCard: React.FC<SignInCardProps> = ({
                         type="password"
                         required
                     />
+                    <p className="text-xs text-end text-sky-900 hover:underline cursor-pointer" onClick={() => setState("forgot")} >
+                        Forgot Password?
+                    </p>
                     <Button 
                         disabled={pending}
                         type="submit" 
@@ -116,7 +119,7 @@ const SignInCard: React.FC<SignInCardProps> = ({
                         Continue with Github
                     </Button>
                 </div>
-                <p className="transform translate-y-12 text-xs text-muted-foreground">
+                <p className="text-xs text-muted-foreground">
                     Don&apos;t have an account? <span onClick={() => setState("signUp")} className="text-sky-900 hover:underline cursor-pointer">Sign up</span>
                 </p>
             </CardContent>

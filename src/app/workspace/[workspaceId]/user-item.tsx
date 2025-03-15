@@ -12,7 +12,7 @@ const userItemVariants = cva(
         variants: {
             variant: {
                 default: "text-[#f9edffcc]",
-                active: "text-[#103d6a] bg-white/90 hover:bg-white/90"
+                active: "text-[#452c63] bg-white/90 hover:bg-white/90"
             },
         },
         defaultVariants: {

@@ -42,7 +42,7 @@ export const Toolbar = () => {
   };
 
   return (
-    <div className="bg-[#001F3F] flex items-center justify-between h-10 p-1.5">
+    <div className="bg-[#33006F] flex items-center justify-between h-10 p-1.5">
       <div className="flex-1"></div>
       <div className="min-w-[280px] max-[642px] grow-[2] shrink">
         <Button
