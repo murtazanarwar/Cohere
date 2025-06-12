@@ -106,6 +106,10 @@ body {
   color: #1264a3 !important;
 }
 
+.ql-editor select {
+  color: #000000;
+}
+
 .ql-editor a:hover {
   text-decoration: underline !important; 
 }
@@ -129,16 +133,5 @@ body {
   scrollbar-color: #dcdcdc #f8f8f8;
 }
 
-@theme {
-  --animate-fade-in-scale: fade-in-scale 0.3s ease-out;
-  @keyframes fade-in-scale {
-    0% {
-      opacity: 0;
-      transform: scale(0.95);
-    }
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
+.ql-code-block {
 }

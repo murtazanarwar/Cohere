@@ -1,8 +1,11 @@
 import "quill/dist/quill.snow.css";
+import "highlight.js/styles/github.css";
 
 import { ImageIcon, Smile, XIcon } from "lucide-react";
 import Quill, { QuillOptions } from "quill";
 import { Delta, Op } from "quill/core";
+import hljs from 'highlight.js';
+
 import {
   MutableRefObject,
   useEffect,
@@ -47,7 +50,7 @@ const Editor = ({
   const [image, setImage] = useState<File | null>(null);
   const [text, setText] = useState("");
   const isEmpty = useMemo(
-    () => !image && text.replace("/s*/g", "").trim().length === 0,
+    () => !image && text.replace(/\s*/g, "").trim().length === 0,
     [text, image]
   );
   const [isToolbarVisible, setIsToolbarVisible] = useState(true);
@@ -79,6 +82,7 @@ const Editor = ({
       theme: "snow",
       placeholder: placeholderRef.current,
       modules: {
+        syntax: { hljs },
         toolbar: [
           ["bold", "italic", "strike"],
           ["link"],
@@ -90,6 +94,7 @@ const Editor = ({
               list: "bullet",
             },
           ],
+          ["code-block"],
         ],
         keyboard: {
           bindings: {

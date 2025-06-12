@@ -23,7 +23,7 @@ const Renderer = ({ value }: RendererProps) => {
     const contents = JSON.parse(value);
     quill.setContents(contents);
 
-    const isEmpty = quill.getText().replace("/s*/g", "").trim().length === 0;
+    const isEmpty = quill.getText().replace(/\s*/g, "").trim().length === 0;
     setIsEmpty(isEmpty);
 
     container.innerHTML = quill.root.innerHTML;
