@@ -31,8 +31,7 @@ const WorkspaceIdLayout = ({ children }: WorkspaceIdLayoutProps) => {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <div>
-          <div className="flex h-[calc(100vh-40px)]">
+          <div className="flex h-[100vh]">
             <ResizablePanelGroup
               direction="horizontal"
               autoSaveId="wck-workspace-layout"
@@ -64,7 +63,6 @@ const WorkspaceIdLayout = ({ children }: WorkspaceIdLayoutProps) => {
               )}
             </ResizablePanelGroup>
           </div>
-        </div>
       </SidebarInset>
     </SidebarProvider>
   );
