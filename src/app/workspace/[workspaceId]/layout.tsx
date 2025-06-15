@@ -11,11 +11,11 @@ import {
 
 import { Id } from "../../../../convex/_generated/dataModel";
 import { usePanel } from "@/hooks/use-pannel";
-import { Toolbar } from "./toolbar";
-import WorkspaceSidebar from "./workspace-sidebar";
 import { Thread } from "@/features/messages/components/thread";
 import { Profile } from "@/features/members/components/profile";
-import Sidebar from "./sidebar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/app/workspace/[workspaceId]/app-sidebar";
+import { SiteHeader } from "./site-header";
 
 
 interface WorkspaceIdLayoutProps {
@@ -28,50 +28,46 @@ const WorkspaceIdLayout = ({ children }: WorkspaceIdLayoutProps) => {
   const showPanel = !!parentMessageId || !!profileMemberId;
 
   return (
-    <div className="h-full">
-      <Toolbar />
-      <div className="flex h-[calc(100vh-40px)]">
-        <Sidebar />
-        <ResizablePanelGroup
-          direction="horizontal"
-          autoSaveId="wck-workspace-layout"
-        >
-          <ResizablePanel
-            defaultSize={20}
-            minSize={11}
-            className="bg-[#5E2C5F]"
-          >
-            <WorkspaceSidebar />
-          </ResizablePanel>
-          <ResizableHandle />
-          <ResizablePanel defaultSize={80} minSize={20}>
-            {children}
-          </ResizablePanel>
-          {showPanel && (
-            <>
-              <ResizableHandle />
-              <ResizablePanel minSize={20} defaultSize={29}>
-                {parentMessageId ? (
-                  <Thread
-                    messageId={parentMessageId as Id<"messages">}
-                    onClose={onClose}
-                  />
-                ) : profileMemberId ? (
-                  <Profile
-                    memberId={profileMemberId as Id<"members">}
-                    onClose={onClose}
-                  />
-                ) : (
-                  <div className="flex h-ful items-center justify-center">
-                    <Loader className="size-5 animate-spin text-muted-foreground" />
-                  </div>
-                )}
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        <div>
+          <SiteHeader />
+          <div className="flex h-[calc(100vh-40px)]">
+            <ResizablePanelGroup
+              direction="horizontal"
+              autoSaveId="wck-workspace-layout"
+            >
+              <ResizablePanel defaultSize={80} minSize={20}>
+                {children}
               </ResizablePanel>
-            </>
-          )}
-        </ResizablePanelGroup>
-      </div>
-    </div>
+              {showPanel && (
+                <>
+                  <ResizableHandle />
+                  <ResizablePanel minSize={20} defaultSize={29}>
+                    {parentMessageId ? (
+                      <Thread
+                        messageId={parentMessageId as Id<"messages">}
+                        onClose={onClose}
+                      />
+                    ) : profileMemberId ? (
+                      <Profile
+                        memberId={profileMemberId as Id<"members">}
+                        onClose={onClose}
+                      />
+                    ) : (
+                      <div className="flex h-ful items-center justify-center">
+                        <Loader className="size-5 animate-spin text-muted-foreground" />
+                      </div>
+                    )}
+                  </ResizablePanel>
+                </>
+              )}
+            </ResizablePanelGroup>
+          </div>
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
   );
 };
 

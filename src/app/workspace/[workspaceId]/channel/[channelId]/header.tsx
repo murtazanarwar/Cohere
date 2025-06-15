@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { FaChevronDown } from "react-icons/fa";
 
 import {
     Dialog,
@@ -9,7 +8,7 @@ import {
     DialogTitle,
     DialogTrigger,
   } from "@/components/ui/dialog"
-import { TrashIcon } from "lucide-react";
+import { ChevronDown, TrashIcon } from "lucide-react";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { DialogClose } from "@radix-ui/react-dialog";
@@ -81,17 +80,17 @@ export const Header = ({ title } : HeaderProps ) => {
     }
 
     return (
-        <div className="bg-white border-b h-[49px] flex items-center px-4 overflow-hidden">
+        <div>
             <ConfirmDialog />
             <Dialog>
                 <DialogTrigger asChild>
                     <Button
                     variant="ghost"
-                    className="text-lg font-semibold px-2 overflow-hidden w-auto"
+                    className="overflow-hidden"
                     size="sm"
                     >
-                        <span className="truncate"># {title}</span>
-                        <FaChevronDown className="size-2.5 ml-3" />
+                        <span className="truncate text-black">{title}</span>
+                        <ChevronDown className="text-black"/>
                     </Button>
                 </DialogTrigger>
                 <DialogContent className="p-0 bg-gray-50 overflow-hidden">

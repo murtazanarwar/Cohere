@@ -1,5 +1,5 @@
 "use client";
-import { AppSidebar } from "@/components/app-sidebar";
+import { AppSidebar } from "@/app/workspace/[workspaceId]/app-sidebar";
 import { ThemeProvider } from "@/components/theme-provider";
 import {
   SidebarInset,
