@@ -19,7 +19,6 @@ import { useWorkspaceId } from "@/hooks/use-workspace-id";
 import { useGetWorkspace } from "@/features/workspaces/api/use-get-workspace";
 import { useGetChannels } from "@/features/channels/api/use-get-channels";
 import { useGetMembers } from "@/features/members/api/use-get-members";
-import { InDevelopmentHint } from "@/components/InDevelopmentHint";
 
 export const SearchBar = () => {
   const router = useRouter();

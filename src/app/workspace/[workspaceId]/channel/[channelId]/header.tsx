@@ -90,7 +90,7 @@ export const Header = ({ title } : HeaderProps ) => {
                     size="sm"
                     >
                         <span className="truncate text-black">{title}</span>
-                        <ChevronDown className="text-black"/>
+                        <ChevronDown className=" text-black"/>
                     </Button>
                 </DialogTrigger>
                 <DialogContent className="p-0 bg-gray-50 overflow-hidden">

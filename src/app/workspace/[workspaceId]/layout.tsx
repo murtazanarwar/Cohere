@@ -32,7 +32,6 @@ const WorkspaceIdLayout = ({ children }: WorkspaceIdLayoutProps) => {
       <AppSidebar />
       <SidebarInset>
         <div>
-          <SiteHeader />
           <div className="flex h-[calc(100vh-40px)]">
             <ResizablePanelGroup
               direction="horizontal"
