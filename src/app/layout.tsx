@@ -11,6 +11,7 @@ import { ConvexClientProvider } from "@/components/ConvexClientProvider";
 import "./globals.css";
 import { JotaiProvider } from "@/components/jotai-provider";
 import ReactQueryProvider from "@/components/ReactQueryProvider";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,9 +33,16 @@ export default function RootLayout({
             <ReactQueryProvider>
               <NuqsAdapter>
                 <JotaiProvider>
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="system"
+                    enableSystem
+                    disableTransitionOnChange
+                >
                   <Toaster />
                   <Modals />
                   {children}
+                </ThemeProvider>
                 </JotaiProvider>
               </NuqsAdapter>
             </ReactQueryProvider>
