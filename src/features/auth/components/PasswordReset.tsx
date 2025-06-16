@@ -58,7 +58,7 @@ const PasswordReset: React.FC<PasswordResetProps> = ({ setState }) => {
             />
             
             <div className="flex gap-2">
-              <Button type="submit" className="w-full bg-[#4A154B] hover:bg-[#611f69]">
+              <Button type="submit" className="w-full bg-[#132e43] hover:bg-[#204864]">
                 Send Code
               </Button>
               <Button type="button" variant="outline" className="w-full" onClick={() => setState("signIn")}>

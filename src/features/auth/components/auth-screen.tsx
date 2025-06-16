@@ -11,10 +11,10 @@ export const AuthScreen = () => {
     const [state , setState ] = useState<SignInFlow>("signIn");
 
     return (
-        <div className="h-full flex items-center justify-around">
+        <div className="h-full flex items-center justify-around bg-[#f1f4f5]">
             <div className="m-4 hidden lg:flex flex-col items-center justify-around w-[800px] h-[600px]">
                 <div className="h-[400px] w-full text-[50px] text-center">
-                    Where <span className="inline-block text-[#611F69]">Work</span> Happens
+                    Where <span className="inline-block text-[#132e43]">Work</span> Happens
                 </div>
                 <div className="justify-self-end w-full"> 
                     <video className="rounded-lg" autoPlay loop muted playsInline >
