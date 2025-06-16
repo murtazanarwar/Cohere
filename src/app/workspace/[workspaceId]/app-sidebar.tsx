@@ -10,19 +10,22 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
+  SidebarSeparator,
 } from "@/components/ui/sidebar"
 import { WorkspaceSwitcher } from "@/app/workspace/[workspaceId]/workspace-switcher"
 
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar collapsible="icon" {...props} className="bg-[#f4f4f5]">
       <SidebarHeader>
         <WorkspaceSwitcher />
       </SidebarHeader>
+      <SidebarSeparator className="bg-zinc-300"/>
       <SidebarContent>
         <SideBarMain />
       </SidebarContent>
+      <SidebarSeparator className="bg-zinc-300"/>
       <SidebarFooter>
         <SideBarUser />
       </SidebarFooter>

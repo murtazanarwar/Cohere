@@ -85,7 +85,7 @@ export const Header = ({ title } : HeaderProps ) => {
             <Dialog>
                 <DialogTrigger asChild>
                     <Button
-                    variant="ghost"
+                    variant="regular"
                     className="overflow-hidden"
                     size="sm"
                     >

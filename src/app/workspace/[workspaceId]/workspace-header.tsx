@@ -36,7 +36,7 @@ const WorkspaceHeader = ({ workspace, isAdmin } : WorkspaceHeaderProps ) => {
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button
-                            variant="ghost"
+                            variant="regular"
                             className="overflow-hidden"
                             size="sm"
                         >

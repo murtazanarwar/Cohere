@@ -35,20 +35,20 @@ export function SiteHeader() {
   }
 
   return (
-    <header className="bg-background sticky top-0 h-14 p-1.5 z-50 flex w-full items-center border-b">
-      <div className="flex h-(--header-height) w-full items-center gap-2 px-4">
-        <SidebarTrigger />
+    <header className="bg-background sticky top-0 h-12 p-1.5 z-50 flex w-full items-center bg-[#f4f4f5] border-b">
+      <div className="flex h-(--header-height) w-full items-center gap-2">
+        <SidebarTrigger className="hover:bg-[#e4e4e7] rounded-md h-10 w-10"/>
         <ModeToggle />
         <Separator orientation="vertical" className="mr-2 h-4" />
         <Breadcrumb className="hidden sm:block">
           <BreadcrumbList>
-            <BreadcrumbItem>
+            <BreadcrumbItem className="rounded-md h-10 w-auto items-center">
               <WorkspaceHeader workspace={workspace} isAdmin={member.role === "admin"} />
             </BreadcrumbItem>
             {!channelLoading && (
               <>
                 <BreadcrumbSeparator className="text-black" />
-                <BreadcrumbItem>
+                <BreadcrumbItem className="rounded-md h-10 w-auto items-center">
                   <Header title={channel.name} />
                 </BreadcrumbItem>
               </>

@@ -53,7 +53,7 @@ export const SearchBar = () => {
   };
 
   return (
-    <div className="w-full sm:ml-auto sm:w-auto">
+    <div className="w-full sm:ml-auto sm:w-1/4 bg-[#e4e4e7] rounded-md">
       <Button
         size="sm"
         className="bg-accent/25 hover:bg-accent-25 w-full justify-start h-7 px-2"

@@ -65,8 +65,8 @@ export function SideBarMain() {
       <SidebarGroupLabel>Workspace</SidebarGroupLabel>
       <SidebarMenu>
         <Collapsible>
-          <SidebarMenuItem>
-            <SidebarMenuButton asChild>
+          <SidebarMenuItem className="hover:bg-[#e4e4e7] rounded-md">
+            <SidebarMenuButton tooltip="Channels" asChild>
               <div>
                 <Hash />
                 <span>Chanels</span>
@@ -76,7 +76,7 @@ export function SideBarMain() {
                           onClick={() => setOPen(true)}
                           variant="transparent"
                           size="iconSm"
-                          className="opacity-0 group-hover:opacity-100 transition-opacity ml-auto p-0.5 text-sm text-black size-6 shrink-0"
+                          className="opacity-0 group-hover:opacity-100 hover:bg-[#d4d4d8] rounded-md transition-opacity ml-auto p-0.5 text-sm text-black size-6 shrink-0"
                       >
                           <PlusIcon className="size-5" />
                       </Button>
@@ -86,7 +86,7 @@ export function SideBarMain() {
             </SidebarMenuButton>
             {channels?.length ? (
               <>
-                <CollapsibleTrigger asChild>
+                <CollapsibleTrigger className="hover:bg-[#d4d4d8] rounded-md" asChild>
                   <SidebarMenuAction className="data-[state=open]:rotate-90">
                     <ChevronRight />
                     <span className="sr-only">Toggle</span>
@@ -96,7 +96,7 @@ export function SideBarMain() {
                   <SidebarMenuSub>
                     {channels?.map((channel) => (
                       <SidebarMenuSubItem key={channel._id}>
-                        <SidebarMenuSubButton asChild>
+                        <SidebarMenuSubButton className="hover:bg-[#d4d4d8] rounded-md" asChild>
                           <Link href={`/workspace/${workspaceId}/channel/${channel._id}`}>
                             <span>{channel.name}</span>
                           </Link>
@@ -110,8 +110,8 @@ export function SideBarMain() {
           </SidebarMenuItem>
         </Collapsible>
         <Collapsible>
-          <SidebarMenuItem>
-            <SidebarMenuButton asChild>
+          <SidebarMenuItem className="hover:bg-[#e4e4e7] rounded-md">
+            <SidebarMenuButton asChild tooltip="Direct Messages">
               <div>
                 <MessagesSquare />
                 <span>Direct Messages</span>
@@ -120,7 +120,7 @@ export function SideBarMain() {
                         onClick={() => {}}
                         variant="transparent"
                         size="iconSm"
-                        className="opacity-0 group-hover:opacity-100 transition-opacity ml-auto p-0.5 text-sm text-black size-6 shrink-0"
+                        className="opacity-0 group-hover:opacity-100 hover:bg-[#d4d4d8] rounded-md transition-opacity ml-auto p-0.5 text-sm text-black size-6 shrink-0"
                     >
                         <PlusIcon className="size-5" />
                     </Button>
@@ -129,7 +129,7 @@ export function SideBarMain() {
             </SidebarMenuButton>
             {members?.length ? (
               <>
-                <CollapsibleTrigger asChild>
+                <CollapsibleTrigger className="hover:bg-[#d4d4d8] rounded-md" asChild>
                   <SidebarMenuAction className="data-[state=open]:rotate-90">
                     <ChevronRight />
                     <span className="sr-only">Toggle</span>
@@ -139,7 +139,7 @@ export function SideBarMain() {
                   <SidebarMenuSub>
                     {members?.map((member) => (
                       <SidebarMenuSubItem key={member._id}>
-                        <SidebarMenuSubButton asChild>
+                        <SidebarMenuSubButton className="hover:bg-[#d4d4d8] rounded-md" asChild>
                           <Link 
                               href={`/workspace/${workspaceId}/member/${member._id}`}
                           >

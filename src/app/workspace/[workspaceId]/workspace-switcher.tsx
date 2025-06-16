@@ -41,7 +41,7 @@ export function WorkspaceSwitcher() {
   if(workspacesLoading) console.log("Loading workspaces...")
 
   return (
-    <SidebarMenu>
+    <SidebarMenu className="hover:bg-[#e4e4e7] rounded-md">
       <SidebarMenuItem>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -49,7 +49,7 @@ export function WorkspaceSwitcher() {
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <div className="shrink-0 size-7 relative overflow-hidden bg-[#f5f5f5] text-sidebar-primary-foreground text-lg rounded-md flex items-center justify-center mr-2">
+              <div className="shrink-0 size-9 relative overflow-hidden bg-[#e4e4e7] text-sidebar-primary-foreground text-lg rounded-md flex items-center justify-center mr-2">
                 {
                   workspaceLoading ? (
                       <Loader className="size-5 animate-spin shrink-0" />
@@ -89,7 +89,7 @@ export function WorkspaceSwitcher() {
                 className="cursor-pointer capitalize overflow-hidden"
                 onClick={() => router.push(`/workspace/${workspace._id}`)} 
               >
-              <div className="shrink-0 size-7 relative overflow-hidden bg-[#f5f5f5] text-sidebar-primary-foreground text-lg rounded-md flex items-center justify-center mr-2">
+              <div className="shrink-0 size-9 relative overflow-hidden bg-[#e4e4e7] text-sidebar-primary-foreground text-lg rounded-md flex items-center justify-center mr-2">
                   {workspace.name.charAt(0).toUpperCase()}
               </div>
               <p className="truncate">{workspace.name}</p>

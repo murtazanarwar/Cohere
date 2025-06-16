@@ -24,7 +24,7 @@ export default function Home() {
     }
   }, [isLoading, workspaceId, open, setOpen, router]);
   return (
-    <div className="h-full flex items-center justify-center">
+    <div className="h-full flex items-center justify- bg-[#f1f4f5]">
       <Loader className="size-6 animate-spin text-muted-foreground"/>
     </div>
   );

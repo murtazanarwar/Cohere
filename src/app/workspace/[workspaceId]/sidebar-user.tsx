@@ -47,8 +47,8 @@ export function SideBarUser() {
   const avatarFallback = name!.charAt(0).toUpperCase()
 
   return (
-    <SidebarMenu>
-      <SidebarMenuItem>
+    <SidebarMenu >
+      <SidebarMenuItem className="hover:bg-[#e4e4e7] rounded-md">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
