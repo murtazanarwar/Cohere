@@ -51,7 +51,7 @@ const SignInCard: React.FC<SignInCardProps> = ({
     }
   
     return ( 
-        <Card className="w-full h-full p-12 space-y-4" style={{ borderColor: "#0c1e2b" }}>
+        <Card className="w-full h-full p-12 space-y-4" style={{ borderColor: "#27272a" }}>
             <CardHeader className="px-0 pt-0">
                 <CardTitle>
                     Login to Continue
@@ -90,7 +90,7 @@ const SignInCard: React.FC<SignInCardProps> = ({
                     <Button 
                         disabled={pending}
                         type="submit" 
-                        className="bg-[#132e43] hover:bg-[#204864] w-full"
+                        className="bg-[#27272a] hover:bg-[#3f3f46] w-full"
                         size="lg"
                     >
                         Continue
