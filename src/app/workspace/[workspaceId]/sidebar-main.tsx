@@ -1,6 +1,6 @@
 "use client"
 
-import { ChevronRight, Hash, MessagesSquare, PlusIcon, type LucideIcon } from "lucide-react"
+import { ChevronRight, Hash, MessageSquareText, MessagesSquare, Headphones, PlusIcon, type LucideIcon } from "lucide-react"
 
 import {
   Collapsible,
@@ -17,6 +17,7 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
+  SidebarSeparator,
 } from "@/components/ui/sidebar"
 
 import { useCurrentMember } from "@/features/members/api/use-current-member";
@@ -160,6 +161,23 @@ export function SideBarMain() {
             ) : null}
           </SidebarMenuItem>
         </Collapsible>
+        <SidebarSeparator className="bg-zinc-300" />
+        <SidebarMenuItem className="hover:bg-[#e4e4e7] rounded-md cursor-pointer" onClick={() => {}}>
+          <SidebarMenuButton asChild tooltip="Start Huddle">
+            <div>
+              <Headphones  />
+              <span>Huddle</span>
+            </div>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+        <SidebarMenuItem className="hover:bg-[#e4e4e7] rounded-md cursor-pointer" onClick={() => {}}>
+          <SidebarMenuButton asChild tooltip="Open Threads">
+            <div>
+              <MessageSquareText />
+              <span>Threads</span>
+            </div>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
       </SidebarMenu>
     </SidebarGroup>
   )

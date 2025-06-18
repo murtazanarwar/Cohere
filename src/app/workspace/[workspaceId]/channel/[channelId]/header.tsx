@@ -27,6 +27,8 @@ interface HeaderProps {
 
 export const Header = ({ title } : HeaderProps ) => {
     const channelId = useChannelId();
+    const workspaceId = useWorkspaceId();
+    const router = useRouter();
 
     const [editOpen, setEditOpen] = useState(false);
     const [value, setValue] = useState(title);
@@ -35,8 +37,6 @@ export const Header = ({ title } : HeaderProps ) => {
         "you can't undo this action"
     );
     
-    const router = useRouter();
-    const workspaceId = useWorkspaceId();
     const { mutate: updateChannel, isPending: isUpdatingChannel } = useUpdateChannel()
     const { mutate: removeChannel, isPending: isRemovingChannel } = useRemoveChannel()
     const { data: member } = useCurrentMember({workspaceId});

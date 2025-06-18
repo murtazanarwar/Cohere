@@ -1,6 +1,6 @@
 "use client";
 
-import { Info, Search } from "lucide-react";
+import { Info, Search, Hash, User2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
@@ -30,16 +30,15 @@ export const SearchBar = () => {
 
   const [open, setOpen] = useState(false);
 
-  // Add global keyboard shortcut (Ctrl + K) to open the CommandDialog
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
-        setOpen(prev => !prev);
+        setOpen((prev) => !prev);
       }
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
   const handleChannelClick = (channelId: Id<"channels">) => () => {
@@ -53,35 +52,46 @@ export const SearchBar = () => {
   };
 
   return (
-    <div className="w-full sm:ml-auto sm:w-1/4 bg-[#e4e4e7] rounded-md">
+    <div className="w-full sm:ml-auto sm:max-w-sm">
       <Button
         size="sm"
-        className="bg-accent/25 hover:bg-accent-25 w-full justify-start h-7 px-2"
+        className="bg-muted hover:bg-muted/70 w-full justify-start h-8 px-3 border border-input text-xs text-muted-foreground"
         onClick={() => setOpen(true)}
+        variant="ghost"
       >
-        <Search className="size-4 text-black mr-2" />
-        <span className="text-black text-xs">Search {workspace?.name}</span>
+        <Search className="mr-2 h-4 w-4 text-muted-foreground" />
+        <span className="text-muted-foreground truncate">
+          Search {workspace?.name}
+        </span>
+        <kbd className="ml-auto text-[10px] text-zinc-400 bg-zinc-100 border px-1 py-0.5 rounded">
+          Ctrl + K
+        </kbd>
       </Button>
+
       <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput placeholder="Type a command or search..." />
+        <CommandInput placeholder="Search channels or members..." />
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
+
           <CommandGroup heading="Channels">
             {getChannels.data?.map((channel) => (
               <CommandItem
                 key={channel._id}
                 onSelect={handleChannelClick(channel._id)}
               >
+                <Hash className="mr-2 h-4 w-4 text-muted-foreground" />
                 {channel.name}
               </CommandItem>
             ))}
           </CommandGroup>
+
           <CommandGroup heading="Members">
             {getMembers.data?.map((member) => (
               <CommandItem
                 key={member._id}
                 onSelect={handleMemberClick(member._id)}
               >
+                <User2 className="mr-2 h-4 w-4 text-muted-foreground" />
                 {member.user.name}
               </CommandItem>
             ))}

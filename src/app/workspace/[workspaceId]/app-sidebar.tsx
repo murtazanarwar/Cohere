@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/sidebar"
 import { WorkspaceSwitcher } from "@/app/workspace/[workspaceId]/workspace-switcher"
 
-
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props} className="bg-[#f4f4f5]">

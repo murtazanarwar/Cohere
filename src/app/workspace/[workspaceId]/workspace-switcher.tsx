@@ -34,11 +34,16 @@ export function WorkspaceSwitcher() {
   
   const { data: workspaces, isLoading: workspacesLoading  } = useGetWorkspaces();
   const { data: workspace, isLoading: workspaceLoading } = useGetWorkspace({ id: workspaceId });
-
   const filteredWorkspaces = workspaces?.filter( ( workspace ) => workspace?._id !== workspaceId );
   
   if(_open) console.log("Dialog Opened...")
   if(workspacesLoading) console.log("Loading workspaces...")
+
+  var formattedDate = "01/01/0001";
+  if(workspace){
+    const createdDate = new Date(workspace._creationTime);
+    formattedDate = createdDate.toLocaleDateString("en-GB");
+  }
 
   return (
     <SidebarMenu className="hover:bg-[#e4e4e7] rounded-md">
@@ -60,7 +65,7 @@ export function WorkspaceSwitcher() {
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{workspace?.name}</span>
-                <span className="truncate text-xs">{workspace?.joinCode}</span>
+                <span className="truncate text-xs">Created On: {formattedDate}</span>
               </div>
               <ChevronsUpDown className="ml-auto" />
             </SidebarMenuButton>

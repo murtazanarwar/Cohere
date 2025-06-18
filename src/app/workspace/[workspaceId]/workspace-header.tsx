@@ -13,6 +13,7 @@ import {PreferencesModal} from "./preferences-modal";
 import { Doc } from "../../../../convex/_generated/dataModel";
 import { useState } from "react";
 import { InviteModal } from "./invite-modal";
+import { useRouter } from "next/navigation";
 
 interface WorkspaceHeaderProps {
     workspace: Doc<"workspaces">;
@@ -20,6 +21,7 @@ interface WorkspaceHeaderProps {
 };
   
 const WorkspaceHeader = ({ workspace, isAdmin } : WorkspaceHeaderProps ) => {
+    const router = useRouter();
     const [preferencesOpen, setPreferencesOpen] = useState(false);
     const [inviteOpen, setInviteOpen] = useState(false);
     
@@ -69,6 +71,7 @@ const WorkspaceHeader = ({ workspace, isAdmin } : WorkspaceHeaderProps ) => {
                                 >
                                     Preferances
                                 </DropdownMenuItem>
+                                <DropdownMenuSeparator />
                             </>
                         )}
                     </DropdownMenuContent>
