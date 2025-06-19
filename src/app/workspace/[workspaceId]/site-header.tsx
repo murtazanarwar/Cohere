@@ -18,6 +18,7 @@ import { useGetWorkspace } from "@/features/workspaces/api/use-get-workspace"
 import WorkspaceHeader from "@/app/workspace/[workspaceId]/workspace-header"
 import { ModeToggle } from "@/components/mode-toggle"
 import LiveUsers from "./live-user"
+import { useHeartBeat } from "@/features/presence/api/use-heart-beat"
 
 export function SiteHeader() {
   const channelId = useChannelId();
@@ -26,6 +27,8 @@ export function SiteHeader() {
   const { data: channel , isLoading: channelLoading } = useGetChannel({ id: channelId });
   const { data: member, isLoading: memberLoading } = useCurrentMember({ workspaceId });
   const { data: workspace, isLoading: workspaceLoading } = useGetWorkspace({ id: workspaceId });
+
+  useHeartBeat({ workspaceId, channelId });
 
   if(!channel){
       return null;

@@ -5,7 +5,6 @@ import { Id } from "../../../../convex/_generated/dataModel";
 
 interface UserCurrentMemberProps {
     workspaceId: Id<"workspaces">;
-
 }
 
 export const useCurrentMember = ({ workspaceId } : UserCurrentMemberProps) => {

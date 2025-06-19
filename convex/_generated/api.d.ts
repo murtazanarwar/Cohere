@@ -20,6 +20,7 @@ import type * as http from "../http.js";
 import type * as members from "../members.js";
 import type * as messages from "../messages.js";
 import type * as passwordReset_ResendOTPPasswordReset from "../passwordReset/ResendOTPPasswordReset.js";
+import type * as presence from "../presence.js";
 import type * as reactions from "../reactions.js";
 import type * as upload from "../upload.js";
 import type * as users from "../users.js";
@@ -41,6 +42,7 @@ declare const fullApi: ApiFromModules<{
   members: typeof members;
   messages: typeof messages;
   "passwordReset/ResendOTPPasswordReset": typeof passwordReset_ResendOTPPasswordReset;
+  presence: typeof presence;
   reactions: typeof reactions;
   upload: typeof upload;
   users: typeof users;
