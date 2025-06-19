@@ -1,24 +1,22 @@
-import { getAuthUserId } from "@convex-dev/auth/server";
-import { v } from "convex/values";
+import { getAuthUserId } from "@convex-dev/auth/server"; // Authenticate user
+import { v } from "convex/values"; // Validator for arguments
 
-import { Id } from "./_generated/dataModel";
-import { mutation, query, QueryCtx } from "./_generated/server";
+import { Id } from "./_generated/dataModel"; // DataModel types
+import { mutation, query, QueryCtx } from "./_generated/server"; // Convex functions and context
 
+// Helper to fetch a full user record by ID
 const populateUser = (ctx: QueryCtx, userId: Id<"users">) => {
   return ctx.db.get(userId);
 };
 
+// Query: return the current member in a workspace or null if not a member
 export const current = query({
-  args: {
-    workspaceId: v.id("workspaces"),
-  },
+  args: { workspaceId: v.id("workspaces") },
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
+    if (userId === null) return null;
 
-    if (userId === null) {
-      return null;
-    }
-
+    // Look up membership by workspace and user
     const member = await ctx.db
       .query("members")
       .withIndex("by_workspace_id_user_id", (q) =>
@@ -26,166 +24,119 @@ export const current = query({
       )
       .unique();
 
-    if (!member) {
-      return null;
-    }
-
-    return member;
+    return member || null;
   },
 });
 
+// Query: fetch a member by ID with user details, if current user has access
 export const getById = query({
-  args: {
-    id: v.id("members"),
-  },
+  args: { id: v.id("members") },
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
-
     if (!userId) return null;
 
-    const member = await ctx.db.get(args.id);
-
+    const member = await ctx.db.get(args.id); // Fetch target member
     if (!member) return null;
 
+    // Verify current user is part of the same workspace
     const currentMember = await ctx.db
       .query("members")
       .withIndex("by_workspace_id_user_id", (q) =>
         q.eq("workspaceId", member.workspaceId).eq("userId", userId)
       )
       .unique();
-
     if (!currentMember) return null;
 
-    const user = await populateUser(ctx, member.userId);
-
+    const user = await populateUser(ctx, member.userId); // Load user info
     if (!user) return null;
 
-    return {
-      ...member,
-      user,
-    };
+    return { ...member, user };
   },
 });
 
+// Query: list all members in a workspace, including user details, if authorized
 export const get = query({
-  args: {
-    workspaceId: v.id("workspaces"),
-  },
+  args: { workspaceId: v.id("workspaces") },
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
+    if (userId === null) return [];
 
-    if (userId === null) {
-      return [];
-    }
-
+    // Check current user's membership
     const member = await ctx.db
       .query("members")
       .withIndex("by_workspace_id_user_id", (q) =>
         q.eq("workspaceId", args.workspaceId).eq("userId", userId)
       )
       .unique();
+    if (!member) return [];
 
-    if (!member) {
-      return [];
-    }
-
+    // Fetch all members in workspace
     const data = await ctx.db
       .query("members")
-      .withIndex("by_workspace_id", (q) =>
-        q.eq("workspaceId", args.workspaceId)
-      )
+      .withIndex("by_workspace_id", (q) => q.eq("workspaceId", args.workspaceId))
       .collect();
 
     const members = [];
-
-    for (const member of data) {
-      const user = await populateUser(ctx, member.userId);
-
-      if (user) {
-        members.push({
-          ...member,
-          user,
-        });
-      }
+    for (const memberItem of data) {
+      const user = await populateUser(ctx, memberItem.userId);
+      if (user) members.push({ ...memberItem, user });
     }
-
     return members;
   },
 });
 
+// Mutation: update a member's role (admin or member)
 export const update = mutation({
-  args: {
-    id: v.id("members"),
-    role: v.union(v.literal("admin"), v.literal("member")),
-  },
+  args: { id: v.id("members"), role: v.union(v.literal("admin"), v.literal("member")) },
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
-
-    if (userId === null) {
-      throw new Error("Unauthorized");
-    }
+    if (userId === null) throw new Error("Unauthorized");
 
     const member = await ctx.db.get(args.id);
+    if (!member) throw new Error("Member not found");
 
-    if (!member) {
-      throw new Error("Member not found");
-    }
-
+    // Only admins can change roles
     const currentMember = await ctx.db
       .query("members")
       .withIndex("by_workspace_id_user_id", (q) =>
         q.eq("workspaceId", member.workspaceId).eq("userId", userId)
       )
       .unique();
-
     if (!currentMember || currentMember.role !== "admin") {
       throw new Error("Unauthorized");
     }
 
-    await ctx.db.patch(args.id, {
-      role: args.role,
-    });
-
+    await ctx.db.patch(args.id, { role: args.role }); // Persist role change
     return args.id;
   },
 });
 
+// Mutation: remove a member and clean up related data
 export const remove = mutation({
-  args: {
-    id: v.id("members"),
-  },
+  args: { id: v.id("members") },
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
-
-    if (userId === null) {
-      throw new Error("Unauthorized");
-    }
+    if (userId === null) throw new Error("Unauthorized");
 
     const member = await ctx.db.get(args.id);
+    if (!member) throw new Error("Member not found");
 
-    if (!member) {
-      throw new Error("Member not found");
-    }
-
+    // Only workspace members can initiate removal
     const currentMember = await ctx.db
       .query("members")
       .withIndex("by_workspace_id_user_id", (q) =>
-        q.eq("workspaceId", member.workspaceId).eq("userId", member.userId)
+        q.eq("workspaceId", member.workspaceId).eq("userId", userId)
       )
       .unique();
+    if (!currentMember) throw new Error("Unauthorized");
 
-    if (!currentMember) {
-      throw new Error("Unauthorized");
-    }
-
-    if (member.role === "admin") {
-      throw new Error("Admin cannot be removed");
-    }
-
+    // Prevent removing admins or self-removal by admin
+    if (member.role === "admin") throw new Error("Admin cannot be removed");
     if (currentMember._id === args.id && currentMember.role === "admin") {
       throw new Error("Cannot remove yourself if you are an admin");
     }
 
+    // Collect all related messages, reactions, conversations
     const [messages, reactions, conversations] = await Promise.all([
       ctx.db
         .query("messages")
@@ -205,18 +156,13 @@ export const remove = mutation({
         )
         .collect(),
     ]);
-    for (const message of messages) {
-      await ctx.db.delete(message._id);
-    }
-    for (const reaction of reactions) {
-      await ctx.db.delete(reaction._id);
-    }
-    for (const conversation of conversations) {
-      await ctx.db.delete(conversation._id);
-    }
 
-    await ctx.db.delete(args.id);
+    // Delete related records
+    for (const message of messages) await ctx.db.delete(message._id);
+    for (const reaction of reactions) await ctx.db.delete(reaction._id);
+    for (const conversation of conversations) await ctx.db.delete(conversation._id);
 
+    await ctx.db.delete(args.id); // Remove member record
     return args.id;
   },
 });

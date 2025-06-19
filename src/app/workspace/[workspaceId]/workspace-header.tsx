@@ -71,7 +71,6 @@ const WorkspaceHeader = ({ workspace, isAdmin } : WorkspaceHeaderProps ) => {
                                 >
                                     Preferances
                                 </DropdownMenuItem>
-                                <DropdownMenuSeparator />
                             </>
                         )}
                     </DropdownMenuContent>

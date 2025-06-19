@@ -22,7 +22,7 @@ import LiveUsers from "./live-user"
 export function SiteHeader() {
   const channelId = useChannelId();
   const workspaceId = useWorkspaceId();
-  
+
   const { data: channel , isLoading: channelLoading } = useGetChannel({ id: channelId });
   const { data: member, isLoading: memberLoading } = useCurrentMember({ workspaceId });
   const { data: workspace, isLoading: workspaceLoading } = useGetWorkspace({ id: workspaceId });
@@ -62,7 +62,7 @@ export function SiteHeader() {
           </Breadcrumb>
         </div>
 
-        <div className="flex items-center gap-4 ml-auto">
+        <div className="flex items-center gap-4 ml-auto mr-4">
           <SearchBar />
           <LiveUsers />
         </div>
