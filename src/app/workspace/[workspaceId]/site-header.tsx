@@ -17,7 +17,6 @@ import { useCurrentMember } from "@/features/members/api/use-current-member"
 import { useGetWorkspace } from "@/features/workspaces/api/use-get-workspace"
 import WorkspaceHeader from "@/app/workspace/[workspaceId]/workspace-header"
 import { ModeToggle } from "@/components/mode-toggle"
-import LiveUsers from "./live-user"
 
 export function SiteHeader() {
   const channelId = useChannelId();
@@ -64,7 +63,6 @@ export function SiteHeader() {
 
         <div className="flex items-center gap-4 ml-auto mr-4">
           <SearchBar />
-          <LiveUsers />
         </div>
       </div>
     </header>
