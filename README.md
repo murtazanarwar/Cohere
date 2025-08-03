@@ -41,9 +41,13 @@ Cohere is a Slack-style collaboration hub for industry teams and professionals. 
 - 🔍 ESLint (code quality) + 🎨 Prettier (formatting)  
 - 🔐 TypeScript (static type safety)  
 
-## Demo
+## 🚀 Demo
 
-Insert gif or link to demo
+Here are quick walkthroughs of various features of the Cohere.  
+📺 Tip: Watch at 2x speed for a faster overview!
+
+### Youtube Demo
+- [▶️ Cohere Demo (7:28)](https://youtu.be/ssDTyOHcHuI)
 
 ## 🔐 Environment Variables
 
