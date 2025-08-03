@@ -100,5 +100,4 @@ Start the production server
 [![Build Status](https://img.shields.io/github/actions/workflow/status/your-username/cohere/ci.yml?branch=main)](https://github.com/your-username/cohere/actions)  
 [![Coverage Status](https://img.shields.io/codecov/c/gh/your-username/cohere/main.svg)](https://codecov.io/gh/your-username/cohere)  
 [![Dependencies](https://img.shields.io/librariesio/release/npm/cohere)](https://libraries.io/npm/cohere) 
-
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/your-username/cohere/pulls)  
