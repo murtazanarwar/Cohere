@@ -10,7 +10,7 @@ for quick demo, use the following account:
 Simply sign in at the login page with these credentials.
 # Project Overview
 
-Cohere is a Slack-style collaboration hub for industry teams and professionals. Cohere unifies real-time chat, threaded discussions, public knowledge feeds, and granular role-based permissions in one sleek, scalable workspace, so your organization can innovate faster, stay aligned, and build stronger professional networks.
+Cohere is a Slack-style collaboration hub for industry teams and professionals. Cohere unifies real-time chat, threaded discussions, and granular role-based permissions in one sleek, scalable workspace, so your organization can innovate faster, stay aligned, and build stronger professional networks.
 ## 🖥️ Tech Stack
 
 **💻 Client:**  
