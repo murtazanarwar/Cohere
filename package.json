@@ -45,9 +45,11 @@
     "react-use": "^17.6.0",
     "react-verification-input": "^4.2.0",
     "resend": "^4.1.2",
+    "socket.io-client": "^4.8.1",
     "sonner": "^1.7.0",
     "tailwind-merge": "^2.5.4",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@types/node": "^20",

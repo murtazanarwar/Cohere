@@ -163,8 +163,8 @@ export function SideBarMain() {
         </Collapsible>
         <SidebarSeparator className="bg-zinc-300" />
         <SidebarMenuItem className="hover:bg-[#e4e4e7] rounded-md cursor-pointer" onClick={() => {}}>
-          <SidebarMenuButton asChild tooltip="Start Huddle">
-            <div>
+          <SidebarMenuButton asChild  tooltip="Start Huddle">
+            <div className="cursor-not-allowed">
               <Headphones  />
               <span>Huddle</span>
             </div>
@@ -172,7 +172,7 @@ export function SideBarMain() {
         </SidebarMenuItem>
         <SidebarMenuItem className="hover:bg-[#e4e4e7] rounded-md cursor-pointer" onClick={() => {}}>
           <SidebarMenuButton asChild tooltip="Open Threads">
-            <div>
+            <div className="cursor-not-allowed">
               <MessageSquareText />
               <span>Threads</span>
             </div>
