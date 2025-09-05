@@ -41,7 +41,7 @@ export default function RootLayout({
                 >
                   <Toaster />
                   <Modals />
-                  {children}
+                    {children}
                 </ThemeProvider>
                 </JotaiProvider>
               </NuqsAdapter>

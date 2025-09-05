@@ -1,10 +1,8 @@
-import { useState } from "react";
 import { 
   AlertTriangle,
   ChevronDownIcon,
   Loader,
   MailIcon,
-  MessageSquareLock,
   XIcon,
 } from "lucide-react";
 import Link from "next/link";
@@ -28,9 +26,8 @@ import { useConfirm } from "@/hooks/use-confirm";
 import { useUpdateMember } from "../api/use-update-member";
 import { useRemoveMember } from "../api/use-remove-member";
 import { useGetMember } from "../api/use-get-member";
+import { SecureDropButton } from "@/features/secure-drop/components/secure-drop-button";
 
-import SecureDropModal from "@/features/secure-drop/components/secure-drop-modal";
-import SecureDropButton from "@/features/secure-drop/components/secure-drop-button";
 
 interface ProfileProps {
   memberId: Id<"members">;
@@ -57,16 +54,11 @@ export const Profile = ({ memberId, onClose }: ProfileProps) => {
     "Are you sure you want to change this member's role?"
   );
 
-  // Secure Drop modal state
-  const [showSecureDrop, setShowSecureDrop] = useState(false);
-
   const handleRemove = async () => {
     const ok = await confirmRemove();
     if (!ok) return;
     removeMember
-      .mutateAsync({
-        id: memberId,
-      })
+      .mutateAsync({ id: memberId })
       .then(() => {
         toast.success("Member removed");
         onClose();
@@ -80,9 +72,7 @@ export const Profile = ({ memberId, onClose }: ProfileProps) => {
     const ok = await confirmLeave();
     if (!ok) return;
     removeMember
-      .mutateAsync({
-        id: memberId,
-      })
+      .mutateAsync({ id: memberId })
       .then(() => {
         toast.success("You left the workspace");
         onClose();
@@ -96,16 +86,13 @@ export const Profile = ({ memberId, onClose }: ProfileProps) => {
     const ok = await confirmChangeRole();
     if (!ok) return;
     updateMember
-      .mutateAsync({
-        id: memberId,
-        role,
-      })
+      .mutateAsync({ id: memberId, role })
       .then(() => {
         toast.success("Role changed");
         onClose();
       })
       .catch(() => {
-        toast.error("Failed to changed role");
+        toast.error("Failed to change role");
       });
   };
 
@@ -115,7 +102,7 @@ export const Profile = ({ memberId, onClose }: ProfileProps) => {
         <div className="flex justify-between items-center h-[49px] px-4 border-b">
           <p className="text-lg font-bold">Profile</p>
           <Button onClick={onClose} size="iconSm" variant="ghost">
-            <XIcon className="size-5 stroke-[1.5] " />
+            <XIcon className="size-5 stroke-[1.5]" />
           </Button>
         </div>
         <div className="flex h-full items-center justify-center">
@@ -131,7 +118,7 @@ export const Profile = ({ memberId, onClose }: ProfileProps) => {
         <div className="flex justify-between items-center h-[49px] px-4 border-b">
           <p className="text-lg font-bold">Profile</p>
           <Button onClick={onClose} size="iconSm" variant="ghost">
-            <XIcon className="size-5 stroke-[1.5] " />
+            <XIcon className="size-5 stroke-[1.5]" />
           </Button>
         </div>
         <div className="flex flex-col gap-y-2 h-full items-center justify-center">
@@ -149,22 +136,15 @@ export const Profile = ({ memberId, onClose }: ProfileProps) => {
       <ConfirmChangeRoleDialog />
       <ConfirmLeaveDialog />
       <ConfirmRemoveDialog />
-      {/* SecureDropModal rendered when showSecureDrop is true */}
-      {showSecureDrop && currentMember.data && (
-        <SecureDropModal
-          currentUserId={currentMember.data._id}
-          targetUserId={memberId}
-          onClose={() => setShowSecureDrop(false)}
-        />
-      )}
 
       <div className="h-full flex flex-col">
         <div className="flex justify-between items-center h-[49px] px-4 border-b">
           <p className="text-lg font-bold">Profile</p>
           <Button onClick={onClose} size="iconSm" variant="ghost">
-            <XIcon className="size-5 stroke-[1.5] " />
+            <XIcon className="size-5 stroke-[1.5]" />
           </Button>
         </div>
+
         <div className="flex flex-col items-center justify-center p-4">
           <Avatar className="max-w-[256px] max-h-[256px] size-full">
             <AvatarImage src={getMember.data.user.image} />
@@ -173,8 +153,10 @@ export const Profile = ({ memberId, onClose }: ProfileProps) => {
             </AvatarFallback>
           </Avatar>
         </div>
+
         <div className="flex flex-col p-4">
           <p className="text-xl font-bold">{getMember.data.user.name}</p>
+
           {currentMember.data?.role === "admin" &&
             currentMember.data?._id !== memberId && (
               <div className="flex items-center gap-2 mt-4">
@@ -209,6 +191,7 @@ export const Profile = ({ memberId, onClose }: ProfileProps) => {
                 </Button>
               </div>
             )}
+
           {currentMember.data?.role !== "admin" &&
             currentMember.data?._id === memberId && (
               <div className="mt-4">
@@ -221,17 +204,19 @@ export const Profile = ({ memberId, onClose }: ProfileProps) => {
                 </Button>
               </div>
             )}
+
           {!isSelf && currentMember.data && (
             <div className="mt-4">
-              <SecureDropButton 
+              <SecureDropButton
                 currentUserId={currentMember.data._id}
                 targetUserId={memberId}
-                onOpen={() => setShowSecureDrop(true)}
               />
             </div>
           )}
         </div>
+
         <Separator />
+
         <div className="flex flex-col p-4">
           <p className="text-sm font-bold mb-4">Contact Information</p>
           <div className="flex items-center gap-2">
@@ -251,7 +236,6 @@ export const Profile = ({ memberId, onClose }: ProfileProps) => {
             </div>
           </div>
         </div>
-        {/* Secure Drop Button: show when profile is not self */}
       </div>
     </>
   );
