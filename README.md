@@ -11,6 +11,8 @@ Simply sign in at the login page with these credentials.
 # Project Overview
 
 Cohere is a Slack-style collaboration hub for industry teams and professionals. Cohere unifies real-time chat, threaded discussions, and granular role-based permissions in one sleek, scalable workspace, so your organization can innovate faster, stay aligned, and build stronger professional networks.
+
+Additionally, Cohere introduces SecureDrop, a secure peer-to-peer messaging and file transfer feature. SecureDrop allows users to exchange messages and files directly between peers without routing data through the server, using WebRTC, Socket.IO, and Metered.co TURN servers for reliable NAT traversal.
 ## 🖥️ Tech Stack
 
 **💻 Client:**  
@@ -25,7 +27,7 @@ Cohere is a Slack-style collaboration hub for industry teams and professionals. 
 - 🔌 Next.js API Routes (TypeScript)  
 - 🔒 NextAuth v5 (authentication)
 - ✉️ Resend (email delivery) 
-- 🔔 Socket.IO (real-time presence & notifications)  
+- 🔔 Socket.IO (real-time presence, notifications & signaling for SecureDrop)
 
 **🗄️ Data & Caching:**  
 - 📦 Convex built-in DB  
@@ -41,6 +43,14 @@ Cohere is a Slack-style collaboration hub for industry teams and professionals. 
 - 🔍 ESLint (code quality) + 🎨 Prettier (formatting)  
 - 🔐 TypeScript (static type safety)  
 
+## SecureDrop enables:
+- Peer-to-peer chat: Send messages directly to other users without the server storing message content.
+- File transfer: Exchange files securely between peers, with status tracking (sending, sent, received).
+- Serverless signaling: Uses Socket.IO to establish peer connections.
+- TURN support: Ensures connectivity behind NATs/firewalls using Metered.co TURN servers.
+- Secure & private: Only the peers involved in a session can access messages and files.
+This feature integrates seamlessly into the existing chat interface.
+
 ## 🚀 Demo
 
 Here are quick walkthroughs of various features of the Cohere.  
@@ -48,6 +58,7 @@ Here are quick walkthroughs of various features of the Cohere.
 
 ### Youtube Demo
 - [▶️ Cohere Demo (7:28)](https://youtu.be/ssDTyOHcHuI)
+- [🔐 Cohere Secure Drop Feature (0:28)](https://youtu.be/-N1kZTby4dQ)
 
 ## 🔐 Environment Variables
 
@@ -62,6 +73,9 @@ NEXT_PUBLIC_CONVEX_URL=https://<your-deployment>.convex.dev
 
 # Resend Email API Key
 AUTH_RESEND_KEY=rtf_live_XXXXXXXXXXXXXXXXXXXXXXXX
+
+# Metered.co TURN API Key (for SecureDrop)
+NEXT_PUBLIC_METERED_API_KEY=your-metered-api-key
 ```
 ## Run Locally
 
