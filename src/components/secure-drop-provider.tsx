@@ -37,7 +37,7 @@ export function SecureDropProvider({
 }) {
   const [state, setState] = useState<State>({ type: "idle" });
 
-  const { initiate, accept, handleAnswer, handleCandidate, end } = useSecureDrop(
+  const { initiate, accept, decline, handleAnswer, handleCandidate, end } = useSecureDrop(
     currentUserId,
     {
       onIncomingOffer: (fromUserId, sdp) => {
@@ -76,8 +76,10 @@ export function SecureDropProvider({
   }
 
   function confirmDecline() {
-    // we simply go back to idle (could also emit an optional decline event)
-    setState({ type: "idle" });
+    if (state.type === "confirm") {
+      decline(state.fromId); // notify the initiator
+      setState({ type: "idle" });
+    }
   }
 
   function stop() {

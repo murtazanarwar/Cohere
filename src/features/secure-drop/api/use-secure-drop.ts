@@ -37,16 +37,23 @@ export function useSecureDrop(currentUserId: string, events: SecureDropEvents) {
       events.onDisconnected?.(fromUserId);
     };
 
+    // Decline
+    const onDecline = ({ fromUserId }: { fromUserId: string }) => {
+      events.onDisconnected?.(fromUserId);
+    };
+
     socket.on("secureDrop:offer", onOffer);
     socket.on("secureDrop:answer", onAnswer);
     socket.on("secureDrop:candidate", onCandidate);
     socket.on("secureDrop:end", onEnd);
+    socket.on("secureDrop:decline", onDecline);
 
     return () => {
       socket.off("secureDrop:offer", onOffer);
       socket.off("secureDrop:answer", onAnswer);
       socket.off("secureDrop:candidate", onCandidate);
       socket.off("secureDrop:end", onEnd);
+      socket.off("secureDrop:decline", onDecline);
     };
   }, [socket, events, currentUserId]);
 
@@ -101,6 +108,20 @@ export function useSecureDrop(currentUserId: string, events: SecureDropEvents) {
     });
   }
 
+  // Notify the targeted user that we are declining the secure drop
+  async function decline(toUserId: string) {
+  socket?.emit("secureDrop:decline", {
+    fromUserId: currentUserId,
+    toUserId,
+  });
+
+  // Close any existing peer connection just in case
+  if (pcRef.current) {
+    pcRef.current.close();
+    pcRef.current = null;
+  }
+}
+
   // Called when we receive a remote answer (from onIncomingAnswer handler)
   async function handleAnswer(sdp: RTCSessionDescriptionInit) {
     if (!pcRef.current) return;
@@ -129,5 +150,5 @@ export function useSecureDrop(currentUserId: string, events: SecureDropEvents) {
     }
   }
 
-  return { initiate, accept, handleAnswer, handleCandidate, end };
+  return { initiate, accept, decline, handleAnswer, handleCandidate, end };
 }
