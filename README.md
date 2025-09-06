@@ -49,6 +49,7 @@ Additionally, Cohere introduces SecureDrop, a secure peer-to-peer messaging and 
 - Serverless signaling: Uses Socket.IO to establish peer connections.
 - TURN support: Ensures connectivity behind NATs/firewalls using Metered.co TURN servers.
 - Secure & private: Only the peers involved in a session can access messages and files.
+
 This feature integrates seamlessly into the existing chat interface.
 
 ## 🚀 Demo
