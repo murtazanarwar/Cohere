@@ -1,23 +1,16 @@
 "use client";
-import { MessageSquareLock } from "lucide-react";
-import { useSecureDrop } from "../api/use-secure-drop";
+import { useSecureDropContext } from "@/components/secure-drop-provider";
 import { Button } from "@/components/ui/button";
-import { Id } from "../../../../convex/_generated/dataModel";
 
-export const SecureDropButton = ({ targetUserId, currentUserId }: { targetUserId: Id<"members">; currentUserId: Id<"members"> }) => {
-  const { initiate } = useSecureDrop(currentUserId);
-
+export default function SecureDropButton({ targetId }: { targetId: string }) {
+  const { initiate } = useSecureDropContext();
   return (
     <Button
       variant="outline"
       className="w-full flex items-center gap-2 justify-center"
-      onClick={() => initiate(targetUserId)}
+      onClick={() => initiate(targetId)}
     >
-      <div className="size-9 flex items-center justify-center">
-        <MessageSquareLock className="size-4" />
-      </div>
-      <span>Secure Drop</span>
+      Secure Drop
     </Button>
   );
-};
-
+}

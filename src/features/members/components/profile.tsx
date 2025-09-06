@@ -26,7 +26,7 @@ import { useConfirm } from "@/hooks/use-confirm";
 import { useUpdateMember } from "../api/use-update-member";
 import { useRemoveMember } from "../api/use-remove-member";
 import { useGetMember } from "../api/use-get-member";
-import { SecureDropButton } from "@/features/secure-drop/components/secure-drop-button";
+import SecureDropButton from "@/features/secure-drop/components/secure-drop-button";
 
 
 interface ProfileProps {
@@ -208,8 +208,7 @@ export const Profile = ({ memberId, onClose }: ProfileProps) => {
           {!isSelf && currentMember.data && (
             <div className="mt-4">
               <SecureDropButton
-                currentUserId={currentMember.data._id}
-                targetUserId={memberId}
+                targetId={memberId}
               />
             </div>
           )}

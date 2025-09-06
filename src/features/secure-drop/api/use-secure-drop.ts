@@ -1,179 +1,133 @@
+// use-secure-drop.ts
+"use client";
 import { useEffect, useRef } from "react";
-import { RTC_CONFIG } from "@/lib/webrtc-config";
-import { useSecureDropContext } from "@/components/secure-drop-provider";
 import { useSocket } from "@/provider/socket-provider";
-import { Id } from "../../../../convex/_generated/dataModel";
 
-export const useSecureDrop = (userId: Id<"members">) => {
+export type SecureDropEvents = {
+  onIncomingOffer?: (fromUserId: string, sdp: RTCSessionDescriptionInit) => void;
+  onIncomingAnswer?: (fromUserId: string, sdp: RTCSessionDescriptionInit) => void;
+  onIceCandidate?: (fromUserId: string, candidate: RTCIceCandidateInit) => void;
+  onDisconnected?: (fromUserId?: string) => void;
+};
+
+export function useSecureDrop(currentUserId: string, events: SecureDropEvents) {
   const { socket } = useSocket();
-  const { state, setState } = useSecureDropContext();
-  const pc = useRef<RTCPeerConnection | null>(null);
-  const dc = useRef<RTCDataChannel | null>(null);
-  const stateRef = useRef(state);
-  const endedRef = useRef(false); // 🔹 track if session is ended
-
-  // keep state ref updated
-  useEffect(() => {
-    stateRef.current = state;
-  }, [state]);
-
-  /** 🔹 Setup WebRTC handlers */
-  const setupPeer = (fromUserId: string) => {
-    pc.current?.close();
-    pc.current = new RTCPeerConnection(RTC_CONFIG);
-    endedRef.current = false; // reset ended flag when new peer created
-
-    // ICE candidates
-    pc.current.onicecandidate = (e) => {
-      if (e.candidate) {
-        socket?.emit("secureDrop:candidate", {
-          fromUserId: userId.toString(),
-          toUserId: fromUserId,
-          candidate: e.candidate,
-        });
-      }
-    };
-
-    // Data channel (when remote creates it)
-    pc.current.ondatachannel = (ev) => {
-      dc.current = ev.channel;
-      dc.current.onmessage = (msg) => console.log("Received:", msg.data);
-    };
-
-    // Monitor connection state
-    pc.current.onconnectionstatechange = () => {
-      console.log("PeerConnection state:", pc.current?.connectionState);
-      if (
-        pc.current?.connectionState === "disconnected" ||
-        pc.current?.connectionState === "failed" ||
-        pc.current?.connectionState === "closed"
-      ) {
-        cleanup();
-        setState({ type: "idle" });
-      }
-    };
-  };
-
-  /** 🔹 Cleanup */
-  const cleanup = () => {
-    pc.current?.close();
-    pc.current = null;
-    dc.current = null;
-    endedRef.current = true; // mark session ended
-  };
+  const pcRef = useRef<RTCPeerConnection | null>(null);
 
   useEffect(() => {
     if (!socket) return;
 
-    const handleOffer = async ({ fromUserId, sdp }: { fromUserId: string; sdp: RTCSessionDescriptionInit }) => {
-      if (endedRef.current) return; // ignore if already ended
-      setState({ type: "confirm", fromUserId: fromUserId as Id<"members"> });
-
-      setupPeer(fromUserId);
-
-      await pc.current?.setRemoteDescription(new RTCSessionDescription(sdp));
-      const answer = await pc.current?.createAnswer();
-      if (!answer) return;
-      await pc.current?.setLocalDescription(answer);
-
-      socket.emit("secureDrop:answer", {
-        fromUserId: userId.toString(),
-        toUserId: fromUserId,
-        sdp: { type: answer.type, sdp: answer.sdp },
-      });
-
-      if (!endedRef.current) {
-        setState({ type: "chat", peerUserId: fromUserId as Id<"members"> });
-      }
+    // Incoming offer forwarded by server: { fromUserId, sdp }
+    const onOffer = ({ fromUserId, sdp }: { fromUserId: string; sdp: RTCSessionDescriptionInit }) => {
+      events.onIncomingOffer?.(fromUserId, sdp);
     };
 
-    const handleAnswer = async ({ fromUserId, sdp }: { fromUserId: string; sdp: RTCSessionDescriptionInit }) => {
-      if (endedRef.current) return; // ignore late answers
-      await pc.current?.setRemoteDescription(new RTCSessionDescription(sdp));
-      setState({ type: "chat", peerUserId: fromUserId as Id<"members"> });
+    // Incoming answer forwarded by server: { fromUserId, sdp }
+    const onAnswer = ({ fromUserId, sdp }: { fromUserId: string; sdp: RTCSessionDescriptionInit }) => {
+      events.onIncomingAnswer?.(fromUserId, sdp);
     };
 
-    const handleCandidate = async ({ candidate }: { candidate: RTCIceCandidateInit }) => {
-      if (endedRef.current) return; // ignore late candidates
-      try {
-        await pc.current?.addIceCandidate(new RTCIceCandidate(candidate));
-      } catch (err) {
-        console.error("Error adding ICE candidate", err);
-      }
+    // Incoming ICE candidate forwarded by server: { fromUserId, candidate }
+    const onCandidate = ({ fromUserId, candidate }: { fromUserId: string; candidate: RTCIceCandidateInit }) => {
+      events.onIceCandidate?.(fromUserId, candidate);
     };
 
-    const handleEnd = ({ fromUserId }: { fromUserId: string }) => {
-      if (endedRef.current) return; // already ended
-      if (stateRef.current.type !== "chat") return;
-      if (stateRef.current.peerUserId !== fromUserId) return;
-
-      console.log("Received remote end from:", fromUserId);
-
-      cleanup();
-      setState({ type: "idle" });
+    // End session forwarded by server: { fromUserId }
+    const onEnd = ({ fromUserId }: { fromUserId?: string }) => {
+      events.onDisconnected?.(fromUserId);
     };
 
-    socket.on("secureDrop:offer", handleOffer);
-    socket.on("secureDrop:answer", handleAnswer);
-    socket.on("secureDrop:candidate", handleCandidate);
-    socket.on("secureDrop:end", handleEnd);
+    socket.on("secureDrop:offer", onOffer);
+    socket.on("secureDrop:answer", onAnswer);
+    socket.on("secureDrop:candidate", onCandidate);
+    socket.on("secureDrop:end", onEnd);
 
     return () => {
-      socket.off("secureDrop:offer", handleOffer);
-      socket.off("secureDrop:answer", handleAnswer);
-      socket.off("secureDrop:candidate", handleCandidate);
-      socket.off("secureDrop:end", handleEnd);
+      socket.off("secureDrop:offer", onOffer);
+      socket.off("secureDrop:answer", onAnswer);
+      socket.off("secureDrop:candidate", onCandidate);
+      socket.off("secureDrop:end", onEnd);
     };
-  }, [socket, userId, setState]);
+  }, [socket, events, currentUserId]);
 
-  /** 🔹 Debug state changes */
-  useEffect(() => {
-    console.log("State changed:", state.type);
-  }, [state]);
+  function createPeerConnection(remoteUserId: string) {
+    const pc = new RTCPeerConnection();
+    pcRef.current = pc;
 
-  /** 🔹 Start a new secure drop */
-  const initiate = async (toUserId: Id<"members">) => {
-    if (!socket) throw new Error("Socket not ready");
-    if (endedRef.current) return; // block if session was ended
+    pc.onicecandidate = (e) => {
+      if (e.candidate) {
+        // server expects { fromUserId, toUserId, candidate }
+        socket?.emit("secureDrop:candidate", {
+          fromUserId: currentUserId,
+          toUserId: remoteUserId,
+          candidate: e.candidate.toJSON(),
+        });
+      }
+    };
 
-    setupPeer(toUserId.toString());
+    pc.onconnectionstatechange = () => {
+      if (pc.connectionState === "disconnected" || pc.connectionState === "failed") {
+        // notify peer via server that we ended (optional)
+        socket?.emit("secureDrop:end", { fromUserId: currentUserId, toUserId: remoteUserId });
+        events.onDisconnected?.(remoteUserId);
+      }
+    };
 
-    dc.current = pc.current!.createDataChannel("chat");
-    dc.current.onmessage = (msg) => console.log("Received:", msg.data);
+    return pc;
+  }
 
-    const offer = await pc.current!.createOffer();
-    await pc.current!.setLocalDescription(offer);
-
-    socket.emit("secureDrop:offer", {
-      fromUserId: userId.toString(),
-      toUserId: toUserId.toString(),
-      sdp: { type: offer.type, sdp: offer.sdp },
+  // Initiate a call: create offer and emit to server with fromUserId + toUserId
+  async function initiate(toUserId: string) {
+    const pc = createPeerConnection(toUserId);
+    const offer = await pc.createOffer();
+    await pc.setLocalDescription(offer);
+    socket?.emit("secureDrop:offer", {
+      fromUserId: currentUserId,
+      toUserId,
+      sdp: offer,
     });
+  }
 
-    if (!endedRef.current) {
-      setState({ type: "chat", peerUserId: toUserId });
+  // Accept an incoming offer: set remote, create answer, emit answer back
+  async function accept(toUserId: string, remoteSdp: RTCSessionDescriptionInit) {
+    const pc = createPeerConnection(toUserId);
+    await pc.setRemoteDescription(remoteSdp);
+    const answer = await pc.createAnswer();
+    await pc.setLocalDescription(answer);
+    socket?.emit("secureDrop:answer", {
+      fromUserId: currentUserId,
+      toUserId,
+      sdp: answer,
+    });
+  }
+
+  // Called when we receive a remote answer (from onIncomingAnswer handler)
+  async function handleAnswer(sdp: RTCSessionDescriptionInit) {
+    if (!pcRef.current) return;
+    await pcRef.current.setRemoteDescription(sdp);
+  }
+
+  // Called when we receive a remote ice candidate (from onIceCandidate handler)
+  async function handleCandidate(candidate: RTCIceCandidateInit) {
+    if (!pcRef.current) return;
+    try {
+      await pcRef.current.addIceCandidate(candidate as RTCIceCandidateInit);
+    } catch (err) {
+      // ignore benign addIceCandidate errors
+      console.warn("addIceCandidate failed", err);
     }
-  };
+  }
 
-  /** 🔹 Send a message */
-  const sendMessage = (msg: string) => {
-    dc.current?.send(msg);
-  };
+  // End session with the specific peer (emit end to server)
+  function end(toUserId?: string) {
+    if (pcRef.current) {
+      pcRef.current.close();
+      pcRef.current = null;
+    }
+    if (toUserId) {
+      socket?.emit("secureDrop:end", { fromUserId: currentUserId, toUserId });
+    }
+  }
 
-  /** 🔹 End the session (local only) */
-  const end = (toUserId: Id<"members">) => {
-    console.log("Local end triggered with", toUserId, new Error().stack);
-    // console.log("Local end triggered with", toUserId);
-
-    cleanup();
-
-    socket?.emit("secureDrop:end", {
-      fromUserId: userId.toString(),
-      toUserId: toUserId.toString(),
-    });
-
-    setState({ type: "idle" });
-  };
-
-  return { state, initiate, sendMessage, end };
-};
+  return { initiate, accept, handleAnswer, handleCandidate, end };
+}
