@@ -33,7 +33,11 @@ export type SecureDropEvents = {
 
 const DEFAULT_CHUNK_SIZE = 64 * 1024; // 64KB
 
-export function useSecureDrop(currentUserId: string, events: SecureDropEvents) {
+export function useSecureDrop(
+  currentUserId: string, 
+  events: SecureDropEvents,
+  rtcConfig?: RTCConfiguration
+) {
   const { socket } = useSocket();
 
   const pcRef = useRef<RTCPeerConnection | null>(null);
@@ -168,7 +172,7 @@ export function useSecureDrop(currentUserId: string, events: SecureDropEvents) {
   }
 
   function createPeerConnection(remoteUserId: string, isInitiator = false) {
-    const pc = new RTCPeerConnection();
+    const pc = new RTCPeerConnection(rtcConfig);
     pcRef.current = pc;
 
     // If initiator, create data channel now
@@ -267,6 +271,20 @@ export function useSecureDrop(currentUserId: string, events: SecureDropEvents) {
     ch.send(payload);
   }
 
+  function waitForBufferedAmountLow(ch: RTCDataChannel, threshold = 512 * 1024) {
+    return new Promise<void>((resolve) => {
+      if (ch.bufferedAmount <= threshold) return resolve();
+      const handler = () => {
+        if (ch.bufferedAmount <= threshold) {
+          ch.removeEventListener("bufferedamountlow", handler);
+          resolve();
+        }
+      };
+      ch.addEventListener("bufferedamountlow", handler);
+      try { ch.bufferedAmountLowThreshold = threshold; } catch {}
+    });
+  }
+  
   // DATA API: send file (chunked)
   async function sendFile(file: File, toUserId: string, chunkSize = DEFAULT_CHUNK_SIZE) {
     const ch = dataChannelRef.current;

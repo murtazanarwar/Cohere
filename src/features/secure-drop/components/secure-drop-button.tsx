@@ -1,6 +1,7 @@
 "use client";
 import { useSecureDropContext } from "@/components/secure-drop-provider";
 import { Button } from "@/components/ui/button";
+import { MessageSquareLock } from "lucide-react";
 
 export default function SecureDropButton({ targetId }: { targetId: string }) {
   const { initiate } = useSecureDropContext();
@@ -10,7 +11,8 @@ export default function SecureDropButton({ targetId }: { targetId: string }) {
       className="w-full flex items-center gap-2 justify-center"
       onClick={() => initiate(targetId)}
     >
-      Secure Drop
+      <MessageSquareLock />
+      <span>Secure Drop</span>
     </Button>
   );
 }

@@ -4,6 +4,7 @@ import React, { createContext, useContext, useState } from "react";
 import { useSecureDrop, FileMeta, SecureDropEvents } from "@/features/secure-drop/api/use-secure-drop";
 import SecureDropConfirmModal from "@/features/secure-drop/components/secure-drop-confirm-modal";
 import SecureDropModal from "@/features/secure-drop/components/secure-drop-modal";
+import { RTC_CONFIG } from "@/lib/webrtc-config";
 
 type State =
   | { type: "idle" }
@@ -99,7 +100,7 @@ export function SecureDropProvider({
     end: rawEnd,
     sendMessage: rawSendMessage,
     sendFile: rawSendFile,
-  } = useSecureDrop(currentUserId, events);
+  } = useSecureDrop(currentUserId, events, RTC_CONFIG);
 
   function initiate(to: string) {
     rawInitiate(to);
