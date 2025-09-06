@@ -10,8 +10,8 @@ export const SocketProvider = ({ userId, children }: { userId: string; children:
   const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
-    if (!userId) return;
-
+    if (!userId) return; 
+    
     const s = io(process.env.NEXT_PUBLIC_SOCKET_URL!, { transports: ["websocket"] });
 
     s.on("connect", () => {

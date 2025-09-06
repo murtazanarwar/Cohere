@@ -1,7 +1,12 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import React, { useEffect, useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
@@ -27,20 +32,18 @@ export default function SecureDropModal({
   const { initiate, sendMessage, end, state } = useSecureDrop(currentUserId);
 
   const [input, setInput] = useState("");
-  const [messages, setMessages] = useState<{ id: string; text: string; fromMe: boolean; time: number }[]>([]);
+  const [messages, setMessages] = useState<
+    { id: string; text: string; fromMe: boolean; time: number }[]
+  >([]);
   const getMember = useGetMember({ id: targetUserId });
 
-  // Auto-initiate if I’m the initiator
+  // Auto-initiate if I’m the initiator (but don’t auto-end on unmount anymore)
   useEffect(() => {
     if (initiator) {
       initiate(targetUserId).catch(() => {
         toast.error("Failed to start secure drop.");
       });
     }
-
-    return () => {
-      end(targetUserId);
-    };
   }, [initiator, targetUserId]);
 
   const handleSend = () => {
@@ -58,8 +61,14 @@ export default function SecureDropModal({
     }
   };
 
+  // Single function to end + close (used by both buttons)
+  const handleClose = () => {
+    end(targetUserId);
+    onClose();
+  };
+
   return (
-    <Dialog open onOpenChange={(open) => !open && onClose()}>
+    <Dialog open onOpenChange={(open) => !open && handleClose()}>
       <DialogContent className="max-w-3xl w-full sm:w-[720px] md:w-[820px] [&>button]:hidden">
         <DialogHeader>
           <div className="flex items-center justify-between w-full">
@@ -76,7 +85,7 @@ export default function SecureDropModal({
               </span>
             </DialogTitle>
 
-            <Button variant="ghost" size="iconSm" onClick={onClose}>
+            <Button variant="ghost" size="iconSm" onClick={handleClose}>
               <XIcon className="size-4" />
             </Button>
           </div>
@@ -103,7 +112,9 @@ export default function SecureDropModal({
                 }`}
               />
               <div className="text-sm">
-                {state.type === "chat" ? "Peer connected" : "Waiting for peer..."}
+                {state.type === "chat"
+                  ? "Peer connected"
+                  : "Waiting for peer..."}
               </div>
             </div>
           </div>
@@ -147,7 +158,9 @@ export default function SecureDropModal({
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder={
-                  state.type === "chat" ? "Type a private message..." : "Waiting for peer..."
+                  state.type === "chat"
+                    ? "Type a private message..."
+                    : "Waiting for peer..."
                 }
                 disabled={state.type !== "chat"}
                 onKeyDown={(e) => e.key === "Enter" && handleSend()}
@@ -159,7 +172,7 @@ export default function SecureDropModal({
               >
                 <Send className="size-4" />
               </Button>
-              <Button variant="ghost" onClick={onClose}>
+              <Button variant="ghost" onClick={handleClose}>
                 Close
               </Button>
             </div>
