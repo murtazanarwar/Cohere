@@ -1,4 +1,3 @@
-// convex/summarize-channel.ts
 import { getAuthUserId } from "@convex-dev/auth/server";
 import { v } from "convex/values";
 import { action, ActionCtx } from "./_generated/server";

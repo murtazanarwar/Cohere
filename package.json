@@ -27,6 +27,7 @@
     "clsx": "^2.1.1",
     "cmdk": "1.0.0",
     "convex": "^1.17.0",
+    "convex-helpers": "^0.1.104",
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
     "emoji-picker-react": "^4.12.0",
