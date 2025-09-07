@@ -7,11 +7,13 @@ import { ChatInput } from "./chat-input";
 import { useGetMessages } from "@/features/messages/api/use-get-messages";
 import { MessageList } from "@/components/message-list";
 import { SiteHeader } from "../../site-header";
+import SummarizeButton from "@/features/summariser/components/SummarizeButton";
+import { useWorkspaceId } from "@/hooks/use-workspace-id";
 
 
 const ChannelPage = () => {
     const channelId = useChannelId();
-    
+    const workspaceId = useWorkspaceId();
     
     const { results, status, loadMore } = useGetMessages({ channelId });
     const { data: channel , isLoading: channelLoading } = useGetChannel({ id: channelId });

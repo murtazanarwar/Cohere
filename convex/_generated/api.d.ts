@@ -21,6 +21,8 @@ import type * as members from "../members.js";
 import type * as messages from "../messages.js";
 import type * as passwordReset_ResendOTPPasswordReset from "../passwordReset/ResendOTPPasswordReset.js";
 import type * as reactions from "../reactions.js";
+import type * as summaries from "../summaries.js";
+import type * as summarizeChannel from "../summarizeChannel.js";
 import type * as upload from "../upload.js";
 import type * as users from "../users.js";
 import type * as workspaces from "../workspaces.js";
@@ -42,6 +44,8 @@ declare const fullApi: ApiFromModules<{
   messages: typeof messages;
   "passwordReset/ResendOTPPasswordReset": typeof passwordReset_ResendOTPPasswordReset;
   reactions: typeof reactions;
+  summaries: typeof summaries;
+  summarizeChannel: typeof summarizeChannel;
   upload: typeof upload;
   users: typeof users;
   workspaces: typeof workspaces;
