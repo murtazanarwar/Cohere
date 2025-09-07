@@ -9,10 +9,16 @@ for quick demo, use the following account:
 
 Simply sign in at the login page with these credentials.
 # Project Overview
-
 Cohere is a Slack-style collaboration hub for industry teams and professionals. Cohere unifies real-time chat, threaded discussions, and granular role-based permissions in one sleek, scalable workspace, so your organization can innovate faster, stay aligned, and build stronger professional networks.
 
-Additionally, Cohere introduces SecureDrop, a secure peer-to-peer messaging and file transfer feature. SecureDrop allows users to exchange messages and files directly between peers without routing data through the server, using WebRTC, Socket.IO, and Metered.co TURN servers for reliable NAT traversal.
+# ✨ Features
+- 💬 Real-time Chat & Threads → modern Slack-style chat with threads for focused discussions.
+- 🔐 SecureDrop → secure peer-to-peer messaging & file transfer with WebRTC, Socket.IO, and TURN servers.
+- 🤖 AI Summarizer → automatically generate concise summaries of long chat discussions using Hugging Face models.
+- 🛡️ Role-based Permissions → fine-grained control over access and collaboration.
+- 📩 Email Notifications → powered by Resend for reliable communication.
+- 🌐 Scalable Cloud Deployment → powered by Convex.dev + Vercel for seamless real-time sync.
+
 ## 🖥️ Tech Stack
 
 **💻 Client:**  
@@ -28,6 +34,7 @@ Additionally, Cohere introduces SecureDrop, a secure peer-to-peer messaging and 
 - 🔒 NextAuth v5 (authentication)
 - ✉️ Resend (email delivery) 
 - 🔔 Socket.IO (real-time presence, notifications & signaling for SecureDrop)
+- 🤖 Hugging Face Inference API (AI Summarizer integration)
 
 **🗄️ Data & Caching:**  
 - 📦 Convex built-in DB  
@@ -52,6 +59,12 @@ Additionally, Cohere introduces SecureDrop, a secure peer-to-peer messaging and 
 
 This feature integrates seamlessly into the existing chat interface.
 
+## AI Summarizer enables:
+- Summarize long chat threads into 2–4 sentences.
+- Highlight key decisions and action items automatically.
+- Works in real time using Convex Actions + Hugging Face models.
+- Breaks long conversations into chunks for accurate summarization and merges results into a single concise output.
+
 ## 🚀 Demo
 
 Here are quick walkthroughs of various features of the Cohere.  
@@ -60,6 +73,7 @@ Here are quick walkthroughs of various features of the Cohere.
 ### Youtube Demo
 - [▶️ Cohere Demo (7:28)](https://youtu.be/ssDTyOHcHuI)
 - [🔐 Cohere Secure Drop Feature (0:28)](https://youtu.be/-N1kZTby4dQ)
+- [🤖 Cohere AI Channel Summarizer(1:00)](https://youtu.be/-N1kZTby4dQ)
 
 ## 🔐 Environment Variables
 
@@ -77,6 +91,12 @@ AUTH_RESEND_KEY=rtf_live_XXXXXXXXXXXXXXXXXXXXXXXX
 
 # Metered.co TURN API Key (for SecureDrop)
 NEXT_PUBLIC_METERED_API_KEY=your-metered-api-key
+
+# Hugging Face API (for AI Summarizer)
+HF_API_TOKEN=your-huggingface-api-token
+HF_MODEL=facebook/bart-large-cnn   # or any summarization model
+MAX_CHUNK_CHARS=8000
+NEXT_PUBLIC_SUMMARY_CHUNK_CHARS=7000
 ```
 ## Run Locally
 
